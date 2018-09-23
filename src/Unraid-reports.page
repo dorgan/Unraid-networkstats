@@ -1,0 +1,15 @@
+Menu="Unraid-Reports"
+Title="Unraid Reports"
+Icon="unraidreports.png"
+---
+<?
+$plugin = "preclear.disk";
+require_once("plugins/${plugin}/Preclear.php");
+
+<link rel="stylesheet" type="text/css" href="/plugins/<?=$plugin;?>/assets/glyphicons.css">
+<? if (file_exists("/plugins/${plugin}/assets/style-${display['theme']}.css")): ?>
+<link rel="stylesheet" type="text/css" href="/plugins/<?=$plugin;?>/assets/style-<?=$display['theme'];?>.css">
+<? endif;?>
+<script type="text/javascript">
+    console.log('test');
+</script>

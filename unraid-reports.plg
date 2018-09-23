@@ -63,6 +63,9 @@
             # Install vnstat
             if [ ! -f "usr/bin/vnstat" ]; then
                 download_install vnstat-1.17-x86_64-1_slonly.txz 2815fbe8d7025db79e6df9ba413e4d94
+                chmod +x /etc/rc.d/rc.vnstatd
+                sed -i -e 's@Interface "eth0"@Interface "bond0"@g' /etc/vnstat.conf
+                /etc/rc.d/rc.vnstatd start
             fi
 
             # Verify and install plugin package
