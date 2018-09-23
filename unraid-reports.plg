@@ -1,0 +1,136 @@
+<?xml version='1.0' standalone='yes'?>
+﻿
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "unraid-reports">
+<!ENTITY author    "dorgan">
+<!ENTITY version   "2018.09.23">
+<!ENTITY gitURL    "https://github.com/dorgan/unraid-reports">
+<!ENTITY vnstatURL "http://slackware.schoepfer.info/14.2_64/slackware64/n_jonix/">
+<!ENTITY pluginURL "$gitURL;/raw/master/unraid-reports.plg">
+]>
+
+<PLUGIN  name="&name;"
+         author="&author;"
+         version="&version;"
+         pluginURL="&pluginURL;">
+
+    <!--
+    2018-09-23 - first release
+
+    The plugin provides extended reporting for unRAID systems.
+
+    -->
+
+
+    <!--
+    The 'plugin' package file.
+    -->
+    <FILE Name="/boot/config/plugins/&name;/&name;-&version;.txz">
+        <URL>&gitURL;/archive/&name;-&version;.txz</URL>
+    </FILE>
+
+
+    <!--
+    The 'plugin' MD5 hash.
+    -->
+    <FILE Name="/boot/config/plugins/&name;/&name;-&version;.md5">
+        <URL>&gitURL;/archive/&name;-&version;.md5</URL>
+    </FILE>
+
+    <!--
+    vnstat file
+    -->
+
+    <FILE Run="/bin/bash">
+        <INLINE>
+            download_install() {
+                local dest="/boot/config/plugins/&name;/${1}"
+                local src="&vnstatURL;/${1}"
+                local md5=$2
+                if [ ! -f "${dest}" ]; then
+                    curl --location --silent --fail "${src}" --output "${dest}"
+                fi
+                file_md5=$(/usr/bin/md5sum ${dest})
+                if [ "${file_md5:0:32}" != "${md5:0:32}" ]; then
+                    echo "Wrong '${1}' package md5 hash."
+                    rm "${dest}"
+                    exit 1
+                else
+                    /sbin/installpkg "$dest"
+                fi
+            }
+
+            # Install vnstat
+            if [ ! -f "usr/bin/vnstat" ]; then
+                download_install vnstat-1.15-x86_64-1jsc.txz e7e820e3cad7c8ca80f38bf7e4c72265
+            fi
+
+            # Verify and install plugin package
+            sum1=$(/usr/bin/md5sum /boot/config/plugins/&name;/&name;-&version;.txz)
+            sum2=$(/usr/bin/cat /boot/config/plugins/&name;/&name;-&version;.md5)
+            if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
+                echo "Wrong 'plugin' md5 hash."
+                rm /boot/config/plugins/&name;/&name;-&version;.txz
+                rm /boot/config/plugins/&name;/&name;-&version;.md5
+                exit 1
+            else
+                upgradepkg --install-new /boot/config/plugins/&name;/&name;-&version;.txz
+            fi
+
+            # Setting correct permissions
+            chmod -R +x /usr/local/emhttp/plugins/&name;/script/
+
+            # Cleaning old source files
+            find /boot/config/plugins/&name;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+            find /boot/config/plugins/&name;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+
+            echo ""
+            echo "-----------------------------------------------------------"
+            echo " &name; has been installed."
+            echo " This plugin requires vnstat to operate"
+            echo " Version: &version;"
+            echo "-----------------------------------------------------------"
+            echo ""
+        </INLINE>
+    </FILE>
+
+    <!--
+    The 'post-install' script.
+    -->
+    <FILE Run="/bin/bash">
+        <INLINE>
+            # Creating some directories
+            mkdir /var/lib/vnstat
+
+            vnstat --create -i br0
+            vnstat --create -i bond0 
+        </INLINE>
+    </FILE>
+
+    <!--
+    The 'remove' script.
+    -->
+    <FILE Run="/bin/bash" Method="remove">
+        <INLINE>
+            # Remove plugin
+            find /var/log/packages -type f -iname "&name;-*" -print0 | xargs -0 removepkg
+
+            # Remove plugin config files
+            rm -rf "/boot/config/plugins/&name;"
+
+            # Remove possible leftovers
+            rm -rf "/usr/local/emhttp/plugins/&name;"
+
+            echo ""
+            echo "-----------------------------------------------------------"
+            echo " &name; has been uninstalled."
+            echo " Please reboot your server to complete uninstall this plugin."
+            echo " Version: &version;"
+            echo "-----------------------------------------------------------"
+            echo ""
+
+            exit 0
+        </INLINE>
+    </FILE>
+
+</PLUGIN>
