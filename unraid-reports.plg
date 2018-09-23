@@ -5,7 +5,7 @@
 <!ENTITY author    "dorgan">
 <!ENTITY version   "2018.09.23">
 <!ENTITY gitURL    "https://github.com/dorgan/unraid-reports">
-<!ENTITY vnstatURL "http://slackware.schoepfer.info/14.2_64/slackware64/n_jonix/">
+<!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
 <!ENTITY pluginURL "$gitURL;/raw/master/unraid-reports.plg">
 ]>
 
@@ -62,7 +62,7 @@
 
             # Install vnstat
             if [ ! -f "usr/bin/vnstat" ]; then
-                download_install vnstat-1.15-x86_64-1jsc.txz e7e820e3cad7c8ca80f38bf7e4c72265
+                download_install vnstat-1.17-x86_64-1_slonly.txz 2815fbe8d7025db79e6df9ba413e4d94
             fi
 
             # Verify and install plugin package
