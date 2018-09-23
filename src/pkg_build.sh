@@ -1,10 +1,10 @@
 #!/bin/bash
 DIR="$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"
 TMPDIR=/tmp/tmp.$(( $RANDOM * 19318203981230 + 40 ))
-PLUGIN=$(basename ${DIR})
-ARCHIVE="$(dirname $(dirname ${DIR}))/archive"
+PLUGIN=$(basename $(dirname ${DIR}))
+ARCHIVE="$(dirname ${DIR})/archive"
 DESTDIR="$TMPDIR/usr/local/emhttp/plugins/${PLUGIN}"
-PLG_FILE="$(dirname $(dirname ${DIR}))/${PLUGIN}.plg"
+PLG_FILE="$(dirname ${DIR})/${PLUGIN}.plg"
 VERSION=$(date +"%Y.%m.%d")
 PACKAGE="${ARCHIVE}/${PLUGIN}-%s.txz"
 MD5="${ARCHIVE}/${PLUGIN}-%s.md5"
@@ -22,10 +22,11 @@ done
 sed -i -e "s#\(ENTITY\s*version[^\"]*\).*#\1\"${VERSION}\">#" "$PLG_FILE"
 
 mkdir -p "${DESTDIR}/"
+mkdir -p "${ARCHIVE}/"
 cd "$DIR"
-cp --parents -f $(find . -type f ! \( -iname "pkg_build.sh" -o -iname "sftp-config.json" -o -iname ".DS_Store"  \) ) "${DESTDIR}/"
+gcp --parents -f $(find . -type f ! \( -iname "pkg_build.sh" -o -iname "sftp-config.json" -o -iname ".DS_Store"  \) ) "${DESTDIR}/"
 cd "$TMPDIR/"
-makepkg -l y -c y "${PACKAGE}"
+/usr/local/sbin/makepkg -l y -c y "${PACKAGE}"
 cd "$ARCHIVE/"
 md5sum $(basename "$PACKAGE") > "$MD5"
 rm -rf "$TMPDIR"
