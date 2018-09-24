@@ -86,6 +86,13 @@
             find /boot/config/plugins/&name;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
             find /boot/config/plugins/&name;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
+            # Creating some directories
+            if [ ! -f "/var/lib/vnstat" ]; then
+                mkdir /var/lib/vnstat
+                vnstat --create -i br0
+                vnstat --create -i bond0
+            fi
+
             echo ""
             echo "-----------------------------------------------------------"
             echo " &name; has been installed."
@@ -93,19 +100,6 @@
             echo " Version: &version;"
             echo "-----------------------------------------------------------"
             echo ""
-        </INLINE>
-    </FILE>
-
-    <!--
-    The 'post-install' script.
-    -->
-    <FILE Run="/bin/bash">
-        <INLINE>
-            # Creating some directories
-            mkdir /var/lib/vnstat
-
-            vnstat --create -i br0
-            vnstat --create -i bond0 
         </INLINE>
     </FILE>
 
