@@ -8,6 +8,7 @@
 <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/&name;/master">
 <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
 <!ENTITY pluginURL "$gitURL;/&name;.plg">
+<!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
 
 <PLUGIN  name="&name;"
@@ -15,6 +16,7 @@
          version="&version;"
          pluginURL="&pluginURL;"
          launch="&launch;">
+
     <CHANGES>
     ##&name;
     ###2018.09.24 - Adding icon
@@ -22,7 +24,6 @@
     ###2018.09.23 - first release
     - first step to creating reporting plugin
     </CHANGES>
-
 
     <!--
     The 'plugin' package file.
