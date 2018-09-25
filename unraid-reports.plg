@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "unraid-reports">
 <!ENTITY author    "dorgan">
-<!ENTITY version   "2018.09.24a">
+<!ENTITY version   "2018.09.25">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/&name;/master">
 <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
@@ -19,6 +19,7 @@
 
     <CHANGES>
     ##&name;
+    ###2018.09.25 - getting icon to work
     ###2018.09.24 - Adding icon
     - correcting plg, so that plugin shows up in list of installed icons
     ###2018.09.23 - first release
