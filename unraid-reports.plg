@@ -4,9 +4,9 @@
 <!ENTITY name      "unraid-reports">
 <!ENTITY author    "dorgan">
 <!ENTITY version   "2018.09.23">
-<!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/unraid-reports/master">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/&name;/master">
 <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
-<!ENTITY pluginURL "$gitURL;/raw/master/unraid-reports.plg">
+<!ENTITY pluginURL "$gitURL;/&name;.plg">
 ]>
 
 <PLUGIN  name="&name;"
