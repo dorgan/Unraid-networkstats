@@ -42,7 +42,7 @@
     </FILE>
 
     <FILE Name="/usr/local/emhttp/plugins/&name;/icons/&name;.png">
-        <LOCAL>/boot/config/plugins/&name;/&name;.png</LOCAL>
+        <URL>https://raw.githubusercontent.com/dorgan/unraid-reports/master/src/usr/local/emhttp/plugins/&name;/icons/&name;.png</URL>
     </FILE>
 
     <!--
