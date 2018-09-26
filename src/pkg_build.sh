@@ -29,7 +29,7 @@ cd "$TMPDIR/"
 makepkg -l y -c y "${PACKAGE}"
 cd "$ARCHIVE/"
 md5sum $(basename "$PACKAGE") > "$MD5"
-#rm -rf "$TMPDIR"
+rm -rf "$TMPDIR"
 
 # Verify and install plugin package
 sum1=$(md5sum "${PACKAGE}")
