@@ -24,12 +24,12 @@ sed -i -e "s#\(ENTITY\s*version[^\"]*\).*#\1\"${VERSION}\">#" "$PLG_FILE"
 mkdir -p "${DESTDIR}/"
 mkdir -p "${ARCHIVE}/"
 cd "$DIR"
-gcp --parents -f $(find . -type f ! \( -iname "pkg_build.sh" -o -iname "sftp-config.json" -o -iname ".DS_Store"  \) ) "${DESTDIR}/"
+cp --parents -f $(find . -type f ! \( -iname "pkg_build.sh" -o -iname "sftp-config.json" -o -iname ".DS_Store"  \) ) "${DESTDIR}/"
 cd "$TMPDIR/"
 makepkg -l y -c y "${PACKAGE}"
 cd "$ARCHIVE/"
 md5sum $(basename "$PACKAGE") > "$MD5"
-rm -rf "$TMPDIR"
+#rm -rf "$TMPDIR"
 
 # Verify and install plugin package
 sum1=$(md5sum "${PACKAGE}")
