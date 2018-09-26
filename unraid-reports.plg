@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "unraid-reports">
 <!ENTITY author    "dorgan">
-<!ENTITY version   "2018.09.26">
+<!ENTITY version   "2018.09.26a">
 <!ENTITY launch    "Settings/Unraid-reports">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/&name;/master">
 <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
