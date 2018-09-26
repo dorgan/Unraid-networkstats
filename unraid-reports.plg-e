@@ -1,30 +1,26 @@
 <?xml version='1.0' standalone='yes'?>
-
+﻿
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "unraid-reports">
 <!ENTITY author    "dorgan">
-<!ENTITY version   "2018.09.26">
-<!ENTITY launch    "Settings/Unraid-reports">
-<!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/&name;/master">
+<!ENTITY version   "2018.09.23">
+<!ENTITY gitURL    "https://github.com/dorgan/unraid-reports">
 <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
-<!ENTITY pluginURL "$gitURL;/&name;.plg">
-<!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
+<!ENTITY pluginURL "$gitURL;/raw/master/unraid-reports.plg">
 ]>
 
 <PLUGIN  name="&name;"
          author="&author;"
          version="&version;"
-         pluginURL="&pluginURL;"
-         launch="&launch;">
+         pluginURL="&pluginURL;">
 
-    <CHANGES>
-    ##&name;
-    ###2018.09.25 - getting icon to work
-    ###2018.09.24 - Adding icon
-    - correcting plg, so that plugin shows up in list of installed icons
-    ###2018.09.23 - first release
-    - first step to creating reporting plugin
-    </CHANGES>
+    <!--
+    2018-09-23 - first release
+
+    The plugin provides extended reporting for unRAID systems.
+
+    -->
+
 
     <!--
     The 'plugin' package file.
@@ -39,10 +35,6 @@
     -->
     <FILE Name="/boot/config/plugins/&name;/&name;-&version;.md5">
         <URL>&gitURL;/archive/&name;-&version;.md5</URL>
-    </FILE>
-
-    <FILE Name="/usr/local/emhttp/plugins/&name;/icons/&name;.png">
-        <URL>https://raw.githubusercontent.com/dorgan/unraid-reports/master/src/usr/local/emhttp/plugins/&name;/icons/&name;.png</URL>
     </FILE>
 
     <!--
@@ -70,7 +62,7 @@
 
             # Install vnstat
             if [ ! -f "usr/bin/vnstat" ]; then
-                download_install vnstat-1.18-x86_64-1_slonly.txz e7719e1bdc199653a8804673059ffe61
+                download_install vnstat-1.17-x86_64-1_slonly.txz 2815fbe8d7025db79e6df9ba413e4d94
                 chmod +x /etc/rc.d/rc.vnstatd
                 sed -i -e 's@Interface "eth0"@Interface "bond0"@g' /etc/vnstat.conf
                 /etc/rc.d/rc.vnstatd start
@@ -95,13 +87,6 @@
             find /boot/config/plugins/&name;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
             find /boot/config/plugins/&name;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
-            # Creating some directories
-            if [ ! -f "/var/lib/vnstat" ]; then
-                mkdir /var/lib/vnstat
-                vnstat --create -i br0
-                vnstat --create -i bond0
-            fi
-
             echo ""
             echo "-----------------------------------------------------------"
             echo " &name; has been installed."
@@ -109,6 +94,19 @@
             echo " Version: &version;"
             echo "-----------------------------------------------------------"
             echo ""
+        </INLINE>
+    </FILE>
+
+    <!--
+    The 'post-install' script.
+    -->
+    <FILE Run="/bin/bash">
+        <INLINE>
+            # Creating some directories
+            mkdir /var/lib/vnstat
+
+            vnstat --create -i br0
+            vnstat --create -i bond0 
         </INLINE>
     </FILE>
 
