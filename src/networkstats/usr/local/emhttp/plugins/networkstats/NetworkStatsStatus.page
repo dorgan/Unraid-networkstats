@@ -1,5 +1,5 @@
-Menu="NetworkStats:2"
-Title="Settings"
+Menu="Dashboard:4"
+Title="Network Stats"
 ---
 <?php
 $plugin = "network-stats";

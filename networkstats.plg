@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "dorgan">
-  <!ENTITY version   "2018.09.27">
+  <!ENTITY version   "2018.09.27a">
   <!ENTITY launch    "Settings/Networkstats">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/master">
   <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
