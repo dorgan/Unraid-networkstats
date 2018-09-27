@@ -43,7 +43,7 @@
     </FILE>
 
     <FILE Name="/usr/local/emhttp/plugins/&name;/&name;.png">
-        <URL>https://raw.githubusercontent.com/dorgan/Unraid-&name;/master/src/network-scripts/usr/local/emhttp/plugins/&name;/icons/&name;.png</URL>
+        <URL>https://raw.githubusercontent.com/dorgan/Unraid-&name;/master/src/network-stats/usr/local/emhttp/plugins/&name;/icons/&name;.png</URL>
     </FILE>
 
     <!--
