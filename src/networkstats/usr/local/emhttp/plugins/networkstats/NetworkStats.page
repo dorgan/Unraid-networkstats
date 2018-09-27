@@ -1,0 +1,4 @@
+Menu="NetworkServices"
+Title="NetworkStats"
+Type="xmenu"
+Tabs="true"

@@ -1,8 +1,7 @@
-Icon="NetworkStats.png"
-Menu="NetworkServices"
-Title="Network Stats"
+Menu="NetworkStats:1"
+Title="Settings"
 ---
-<?
+<?php
 $plugin = "network-stats";
 $plg_path = "/boot/config/plugins/" . $plugin;
 $cfg_file    = "$plg_path/" . $plugin . ".cfg";

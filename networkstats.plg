@@ -1,10 +1,10 @@
 <?xml version='1.0' standalone='yes'?>
 
 <!DOCTYPE PLUGIN [
-  <!ENTITY name      "network-stats">
+  <!ENTITY name      "networkstats">
   <!ENTITY author    "dorgan">
   <!ENTITY version   "2018.09.27p">
-  <!ENTITY launch    "Settings/Network-stats">
+  <!ENTITY launch    "Settings/Networkstats">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/master">
   <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
   <!ENTITY pluginURL "$gitURL;/&name;.plg">
@@ -45,7 +45,7 @@
     </FILE>
 
     <FILE Name="&emhttp;/&name;.png">
-        <URL>https://raw.githubusercontent.com/dorgan/Unraid-&name;/master/src/network-stats/usr/local/emhttp/plugins/&name;/icons/&name;.png</URL>
+        <URL>https://raw.githubusercontent.com/dorgan/Unraid-&name;/master/src/&name;/usr/local/emhttp/plugins/&name;/icons/&name;.png</URL>
     </FILE>
 
     <FILE Name="&plgPATH;/&name;.cfg">

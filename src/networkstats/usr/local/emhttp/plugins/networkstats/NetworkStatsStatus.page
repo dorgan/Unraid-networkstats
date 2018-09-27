@@ -1,7 +1,5 @@
-Menu="Tasks:80"
-Title="Network Stats"
-Name="Network Stats"
-Type="xmenu"
+Menu="NetworkStats:2"
+Title="Settings"
 ---
 <?php
 $plugin = "network-stats";
