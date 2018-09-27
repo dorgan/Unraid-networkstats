@@ -1,5 +1,5 @@
 Icon="NetworkStats.png"
-Menu="UserPreferences"
+Menu="NetworkServices"
 Title="Network Stats"
 ---
 <?
