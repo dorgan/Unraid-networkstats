@@ -1,8 +1,7 @@
 Menu="Tasks:80"
+Title="Network Stats"
 Name="Network Stats"
 Type="xmenu"
-Tabs="true"
-Code="f0dc"
 ---
 <?php
 $plugin = "network-stats";
@@ -14,8 +13,12 @@ if (!$active) {
 
 $plugin = 'network-stats';
 $cfg = parse_plugin_cfg($plugin);
-$interfaces = split($cfg['INTERFACES'], ',');
+$interfaces = explode(',', $cfg['INTERFACES']);
+?>
+
+<table border="0">
 foreach ($interfaces as $interface) {
-echo ('<img src="/plugins/' . $plugin . '/vnstat.php?i=' . $interface .'" />');
+echo ('<tr><td><img src="' .$vnstat .'i=' . $interface .'&s=y"></td><td><img src="/plugins/' . $plugin . '/vnstat.php?i=' . $interface .'&style=3&dh=d" /></td></tr>');
 }
 ?>
+</table>

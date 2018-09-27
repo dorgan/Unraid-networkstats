@@ -14,7 +14,7 @@ else
     MD5="${ARCHIVE}/${PLUGIN}-${VERSION}${ARCH}.md5"
 
 
-    for x in '' a b c d e d f g h i j k l m n o ; do
+    for x in '' a b c d e d f g h i j k l m n o p q r s t u v w x y z; do
         PKG="${ARCHIVE}/${PLUGIN}-${VERSION}${x}${ARCH}.txz"
         if [[ ! -f $PKG ]]; then
           PACKAGE=$PKG
