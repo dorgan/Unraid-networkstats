@@ -9,6 +9,7 @@
 <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
 <!ENTITY pluginURL "$gitURL;/&name;.plg">
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
+<!ENTITY plgNAME   "&name;-&version;-x86_64-1">
 ]>
 
 <PLUGIN  name="&name;"
@@ -29,16 +30,16 @@
     <!--
     The 'plugin' package file.
     -->
-    <FILE Name="/boot/config/plugins/&name;/&name;-&version;.txz">
-        <URL>&gitURL;/archive/&name;-&version;.txz</URL>
+    <FILE Name="/boot/config/plugins/&name;/&plgNAME;.txz">
+        <URL>&gitURL;/archive/&plgNAME;.txz</URL>
     </FILE>
 
 
     <!--
     The 'plugin' MD5 hash.
     -->
-    <FILE Name="/boot/config/plugins/&name;/&name;-&version;.md5">
-        <URL>&gitURL;/archive/&name;-&version;.md5</URL>
+    <FILE Name="/boot/config/plugins/&name;/&plgNAME;.md5">
+        <URL>&gitURL;/archive/&plgNAME;.md5</URL>
     </FILE>
 
     <FILE Name="/usr/local/emhttp/plugins/&name;/&name;.png">
