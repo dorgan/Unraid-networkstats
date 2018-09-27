@@ -11,6 +11,8 @@
   <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
   <!ENTITY plgPATH   "/boot/config/plugins/&name;">
   <!ENTITY plgNAME   "&name;-&version;-x86_64-1">
+  <!ENTITY vnstatFile "vnstat-1.18-x86_64-1_slonly.txz">
+  <!ENTITY vnstatFileMD5 "e7719e1bdc199653a8804673059ffe61">
 ]>
 
 <PLUGIN  name="&name;"
@@ -80,9 +82,10 @@
 
             # Install vnstat
             if [ ! -f "usr/bin/vnstat" ]; then
-                download_install vnstat-1.18-x86_64-1_slonly.txz e7719e1bdc199653a8804673059ffe61
+                download_install &vnstatFile; &vnstatFileMD5;
                 chmod +x /etc/rc.d/rc.vnstatd
                 sed -i -e 's@Interface "eth0"@Interface "bond0"@g' /etc/vnstat.conf
+                # start daemon
                 /etc/rc.d/rc.vnstatd start
             fi
 
@@ -124,14 +127,19 @@
     -->
     <FILE Run="/bin/bash" Method="remove">
         <INLINE>
-            # Remove plugin
-            find /var/log/packages -type f -iname "&name;-*" -print0 | xargs -0 removepkg
-
+            #stop daemon
+            /etc/rc.d/rc.vnstatd stop
+	    sleep 1
+		
             # Remove plugin config files
-            rm -rf "&plgPATH;"
+            rm -rf "&plgPATH;/*.conf"
 
-            # Remove possible leftovers
-            rm -rf "&emhttp;"
+            # uninstall plugin
+	    removepkg &plgPATH;/*.txz
+
+	    rm -rf &emhttp;
+            rm -rf &plgPATH;/*.txz \
+		&plgPATH;/*.md5
 
             echo ""
             echo "-----------------------------------------------------------"

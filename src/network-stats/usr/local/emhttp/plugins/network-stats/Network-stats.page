@@ -4,8 +4,20 @@ Title="Network Stats"
 ---
 <?
 $plugin = "network-stats";
+$plg_path = "/boot/config/plugins/" . $plugin;
+$cfg_file    = "$plg_path/" . $plugin . ".cfg";
+if (file_exists($cfg_file)) {
+    $cfg    = parse_ini_file($cfg_file);
+    $interfaces = isset($cfg['INTERFACES']) ? htmlspecialchars($cfg['INTERFACES']) : '';
+}
+
+
 ?>
 
-<script type="text/javascript">
-    console.log('test');
-</script>
+<form markdown="1" name="seld_settings" method="POST" action="/update.php" target="progressFrame">
+<input type="hidden" name="#file" value="network-stats/network-stats.cfg" />
+<input type="hidden" id="COMMAND" name="#command" value="" />
+<label for="interfaces">Interfaces to capture</label>
+  : <input id="interfaces" name="INTERFACES" value="<?= $interfaces ?>">
+<input type="submit" value="SAVE">
+</form>
