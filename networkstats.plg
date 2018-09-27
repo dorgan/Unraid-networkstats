@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "dorgan">
-  <!ENTITY version   "2018.09.27a">
+  <!ENTITY version   "2018.09.27b">
   <!ENTITY launch    "Settings/Networkstats">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/master">
   <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
@@ -23,11 +23,9 @@
 
     <CHANGES>
     ##&name;
-    ###2018.09.25 - getting icon to work
-    ###2018.09.24 - Adding icon
-    - correcting plg, so that plugin shows up in list of installed icons
-    ###2018.09.23 - first release
-    - first step to creating reporting plugin
+###2018.09.27b
+    ###2018.09.27b - Initial Release
+    Initial release, right now using default image output from vnstati, but will be updating to a better library soon
     </CHANGES>
 
     <!--

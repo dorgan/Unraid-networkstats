@@ -1,22 +1,23 @@
-Menu="Dashboard:4"
+Menu="Stats:3"
 Title="Network Stats"
 ---
 <?php
-$plugin = "network-stats";
+$plugin = "networkstats";
 $active       = (intval(trim(shell_exec( "[ -f /proc/`cat /var/run/vnstat.pid 2> /dev/null`/exe ] && echo 1 || echo 0 2> /dev/null" ))) === 1);
 if (!$active) {
   echo "<div class='notice'>vnstat service must berunning <strong><big>started</big></strong> to view network stats.</div>";
   return;
 }
 
-$plugin = 'network-stats';
 $cfg = parse_plugin_cfg($plugin);
 $interfaces = explode(',', $cfg['INTERFACES']);
+$vnstat = '/plugins/' . $plugin . '/vnstat.php';
 ?>
 
 <table border="0">
+<?php
 foreach ($interfaces as $interface) {
-echo ('<tr><td><img src="' .$vnstat .'i=' . $interface .'&s=y"></td><td><img src="/plugins/' . $plugin . '/vnstat.php?i=' . $interface .'&style=3&dh=d" /></td></tr>');
+    echo ('<tr><td><img src="' .$vnstat .'?i=' . $interface .'&s=y"></td><td><img src="' . $vnstat . '?i=' . $interface .'&style=3&dh=h" /></td></tr>');
 }
 ?>
 </table>

@@ -7,7 +7,7 @@ else
     PLUGIN=$(basename ${DIR})
     ARCHIVE="$(dirname $(dirname ${DIR}))/archive"
     DESTDIR="$TMPDIR/usr/local/emhttp/plugins/${PLUGIN}"
-    PLG_FILE="$(dirname $(dirname ${DIR}))/plugin/${PLUGIN}.plg"
+    PLG_FILE="$(dirname $(dirname ${DIR}))/${PLUGIN}.plg"
     VERSION=$(date +"%Y.%m.%d")
     ARCH="-x86_64-1"
     PACKAGE="${ARCHIVE}/${PLUGIN}-${VERSION}${ARCH}.txz"
@@ -16,7 +16,7 @@ else
 
     for x in '' a b c d e d f g h i j k l m n o p q r s t u v w x y z; do
         PKG="${ARCHIVE}/${PLUGIN}-${VERSION}${x}${ARCH}.txz"
-        PRINT "Looking for  ${PKG}"
+        echo "Looking for  ${PKG}"
         if [[ ! -f $PKG ]]; then
           PACKAGE=$PKG
           VERSION="${VERSION}${x}"
