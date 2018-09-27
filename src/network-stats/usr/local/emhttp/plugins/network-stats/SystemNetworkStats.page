@@ -5,6 +5,7 @@ Tabs="true"
 Code="f0dc"
 ---
 <?php
+$plugin = "network-stats";
 $active       = (intval(trim(shell_exec( "[ -f /proc/`cat /var/run/vnstat.pid 2> /dev/null`/exe ] && echo 1 || echo 0 2> /dev/null" ))) === 1);
 if (!$active) {
   echo "<div class='notice'>vnstat service must berunning <strong><big>started</big></strong> to view network stats.</div>";
@@ -13,5 +14,8 @@ if (!$active) {
 
 $plugin = 'network-stats';
 $cfg = parse_plugin_cfg($plugin);
-
+$interfaces = split($cfg['INTERFACES'], ',');
+foreach ($interfaces as $interface) {
+echo ('<img src="/plugins/' . $plugin . '/vnstat.php?i=' . $interface .'" />');
+}
 ?>
