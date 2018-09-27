@@ -1,15 +1,16 @@
 <?xml version='1.0' standalone='yes'?>
 
 <!DOCTYPE PLUGIN [
-<!ENTITY name      "network-stats">
-<!ENTITY author    "dorgan">
-<!ENTITY version   "2018.09.27g">
-<!ENTITY launch    "Settings/Network-stats">
-<!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/master">
-<!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
-<!ENTITY pluginURL "$gitURL;/&name;.plg">
-<!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
-<!ENTITY plgNAME   "&name;-&version;-x86_64-1">
+  <!ENTITY name      "network-stats">
+  <!ENTITY author    "dorgan">
+  <!ENTITY version   "2018.09.27g">
+  <!ENTITY launch    "Settings/Network-stats">
+  <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/master">
+  <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
+  <!ENTITY pluginURL "$gitURL;/&name;.plg">
+  <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
+  <!ENTITY plgPATH   "/boot/config/plugins/&name;">
+  <!ENTITY plgNAME   "&name;-&version;-x86_64-1">
 ]>
 
 <PLUGIN  name="&name;"
@@ -30,21 +31,29 @@
     <!--
     The 'plugin' package file.
     -->
-    <FILE Name="/boot/config/plugins/&name;/&plgNAME;.txz">
+    <FILE Name="&plgPATH;/&plgNAME;.txz">
         <URL>&gitURL;/archive/&plgNAME;.txz</URL>
     </FILE>
-
 
     <!--
     The 'plugin' MD5 hash.
     -->
-    <FILE Name="/boot/config/plugins/&name;/&plgNAME;.md5">
+    <FILE Name="&plgPATH;/&plgNAME;.md5">
         <URL>&gitURL;/archive/&plgNAME;.md5</URL>
     </FILE>
 
-    <FILE Name="/usr/local/emhttp/plugins/&name;/&name;.png">
+    <FILE Name="&emhttp;/&name;.png">
         <URL>https://raw.githubusercontent.com/dorgan/Unraid-&name;/master/src/network-stats/usr/local/emhttp/plugins/&name;/icons/&name;.png</URL>
     </FILE>
+
+    <FILE Name="&plgPATH;/&name;.cfg">
+      <INLINE>
+      <![CDATA[
+      INTERFACES="eth0,bond0"
+      ]]>
+      </INLINE>
+    </FILE>
+
 
     <!--
     vnstat file
@@ -53,7 +62,7 @@
     <FILE Run="/bin/bash">
         <INLINE>
             download_install() {
-                local dest="/boot/config/plugins/&name;/${1}"
+                local dest="&plgPATH;/${1}"
                 local src="&vnstatURL;/${1}"
                 local md5=$2
                 if [ ! -f "${dest}" ]; then
@@ -82,19 +91,16 @@
             sum2=$(/usr/bin/cat /boot/config/plugins/&name;/&plgNAME;.md5)
             if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
                 echo "Wrong 'plugin' md5 hash."
-                rm /boot/config/plugins/&name;/&plgNAME;.txz
-                rm /boot/config/plugins/&name;/&plgNAME;.md5
+                rm &plgPATH;/&plgNAME;.txz
+                rm &plgPATH;/&plgNAME;.md5
                 exit 1
             else
-                upgradepkg --install-new /boot/config/plugins/&name;/&plgNAME;.txz
+                upgradepkg --install-new &plgPATH;/&plgNAME;.txz
             fi
 
-            # Setting correct permissions
-            chmod o+xw /usr/local/emhttp/plugins/&name;
-
             # Cleaning old source files
-            find /boot/config/plugins/&name;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
-            find /boot/config/plugins/&name;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+            find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+            find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
             # Creating some directories
             if [ ! -f "/var/lib/vnstat" ]; then
@@ -122,10 +128,10 @@
             find /var/log/packages -type f -iname "&name;-*" -print0 | xargs -0 removepkg
 
             # Remove plugin config files
-            rm -rf "/boot/config/plugins/&name;"
+            rm -rf "&plgPATH;"
 
             # Remove possible leftovers
-            rm -rf "/usr/local/emhttp/plugins/&name;"
+            rm -rf "&emhttp;"
 
             echo ""
             echo "-----------------------------------------------------------"
