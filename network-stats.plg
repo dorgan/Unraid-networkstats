@@ -41,7 +41,7 @@
         <URL>&gitURL;/archive/&name;-&version;.md5</URL>
     </FILE>
 
-    <FILE Name="/usr/local/emhttp/plugins/&name;/icons/&name;.png">
+    <FILE Name="/usr/local/emhttp/plugins/&name;/&name;.png">
         <URL>https://raw.githubusercontent.com/dorgan/Unraid-&name;/master/src/usr/local/emhttp/plugins/&name;/icons/&name;.png</URL>
     </FILE>
 
