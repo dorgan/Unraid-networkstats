@@ -11,13 +11,25 @@ if (file_exists($cfg_file)) {
     $interfaces = isset($cfg['INTERFACES']) ? htmlspecialchars($cfg['INTERFACES']) : '';
 }
 
+$active       = (intval(trim(shell_exec( "[ -f /proc/`cat /var/run/vnstat.pid 2> /dev/null`/exe ] && echo 1 || echo 0 2> /dev/null" ))) === 1);
+$running        = "<span class='green'>Running</span>";
+$stopped        = "<span class='orange'>Stopped</span>";
+$status    = ($active)    ? $running : $stopped;
 
 ?>
 
-<form markdown="1" name="seld_settings" method="POST" action="/update.php" target="progressFrame">
+<form markdown="1" name="network_stat_settings" method="POST" action="/update.php" target="progressFrame">
+<div id="title" style="margin-top: -22px;">
+  <span class="left"><img class="icon" src="/plugins/network-stats/icons/network-stats.png"> Inteface Settings</span>
+  <span class="status" id="notify-status">Event Notification: <?=$status;?> </span>
+</div>
 <input type="hidden" name="#file" value="network-stats/network-stats.cfg" />
 <input type="hidden" id="COMMAND" name="#command" value="" />
+<div>
 <label for="interfaces">Interfaces to capture</label>
   : <input id="interfaces" name="INTERFACES" value="<?= $interfaces ?>">
-<input type="submit" value="SAVE">
+</div>
+<div>
+  <input type="submit" value="SAVE">
+</div>
 </form>
