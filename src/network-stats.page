@@ -1,9 +1,9 @@
-Icon="NerdPack.png"
+Icon="NetworkStats.png"
 Menu="UserPreferences"
-Title="Unraid Reports"
+Title="Network Stats"
 ---
 <?
-$plugin = "unraid-reports";
+$plugin = "network-stats";
 ?>
 
 <script type="text/javascript">

@@ -1,7 +1,7 @@
 <?
 set_error_handler("log_error");
 set_exception_handler( "log_exception" );
-$plugin = "unraid-reports";
+$plugin = "network-stats";
 require_once( "webGui/include/Helpers.php" );
 
 function log_error($errno, $errstr, $errfile, $errline)
