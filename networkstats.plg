@@ -23,10 +23,11 @@
 
     <CHANGES>
     ##&name;
-###2018.09.27c
-###2018.09.27b
-###2018.09.27b
-    ###2018.09.27b - Initial Release
+###2018.09.27c - Quick Tweaks
+  - Changed author to actual name
+  - Corrected Status label on settings screen
+
+###2018.09.27b - Initial Release
     Initial release, right now using default image output from vnstati, but will be updating to a better library soon
     </CHANGES>
 
