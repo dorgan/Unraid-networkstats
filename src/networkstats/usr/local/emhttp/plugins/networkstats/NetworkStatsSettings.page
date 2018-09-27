@@ -2,7 +2,7 @@ Menu="NetworkStats:1"
 Title="Settings"
 ---
 <?php
-$plugin = "network-stats";
+$plugin = "networkstats";
 $plg_path = "/boot/config/plugins/" . $plugin;
 $cfg_file    = "$plg_path/" . $plugin . ".cfg";
 if (file_exists($cfg_file)) {
