@@ -47,10 +47,6 @@
         <URL>&gitURL;/archive/&plgNAME;.md5</URL>
     </FILE>
 
-    <FILE Name="&emhttp;/&name;.png">
-        <URL>https://raw.githubusercontent.com/dorgan/Unraid-&name;/master/src/&name;/usr/local/emhttp/plugins/&name;/icons/&name;.png</URL>
-    </FILE>
-
     <FILE Name="&plgPATH;/&name;.cfg">
       <INLINE>
       <![CDATA[
