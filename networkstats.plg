@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.09.27d">
+  <!ENTITY version   "2018.09.28">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "correct-icons">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -24,6 +24,7 @@
 
     <CHANGES>
     ##&name;
+###2018.09.28
 ###2018.09.28 - Changing icons
   - Correcting icons sizes
 
