@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.09.27c">
+  <!ENTITY version   "2018.09.27d">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/master">
   <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
@@ -23,6 +23,8 @@
 
     <CHANGES>
     ##&name;
+###2018.09.27d - Correction to start vnstat
+
 ###2018.09.27c - Quick Tweaks
   - Changed author to actual name
   - Corrected Status label on settings screen
@@ -86,8 +88,10 @@
                 download_install &vnstatFile; &vnstatFileMD5;
                 chmod +x /etc/rc.d/rc.vnstatd
                 sed -i -e 's@Interface "eth0"@Interface "bond0"@g' /etc/vnstat.conf
+                # make daemon executable
+                chmod ugo+x /etc/rc.d/rc.vnstat
                 # start daemon
-                /etc/rc.d/rc.vnstatd start
+                /etc/rc.d/rc.vnstat start
             fi
 
             # Verify and install plugin package
@@ -107,11 +111,14 @@
             find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
             # Creating some directories
-            if [ ! -f "/var/lib/vnstat" ]; then
+            if [ ! -d "/var/lib/vnstat" ]; then
                 mkdir /var/lib/vnstat
                 vnstat --create -i br0
                 vnstat --create -i bond0
             fi
+
+            # restart vnstat
+            /etc/rc.d/rc.vnstat restart
 
             echo ""
             echo "-----------------------------------------------------------"
