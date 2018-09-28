@@ -5,7 +5,8 @@
   <!ENTITY author    "Donald Organ">
   <!ENTITY version   "2018.09.27d">
   <!ENTITY launch    "Settings/NetworkStats">
-  <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/master">
+  <!ENTITY branch    "correct-icons">
+  <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
   <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
   <!ENTITY pluginURL "$gitURL;/&name;.plg">
   <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
@@ -23,6 +24,9 @@
 
     <CHANGES>
     ##&name;
+###2018.09.28 - Changing icons
+  - Correcting icons sizes
+
 ###2018.09.27d - Correction to start vnstat
 
 ###2018.09.27c - Quick Tweaks
