@@ -8,7 +8,9 @@ $plg_path = "/boot/config/plugins/" . $plugin;
 $cfg_file    = "$plg_path/" . $plugin . ".cfg";
 if (file_exists($cfg_file)) {
     $cfg    = parse_ini_file($cfg_file);
-    $selectedInterfaces = explode(',', isset($cfg['INTERFACES']) ? htmlspecialchars($cfg['INTERFACES']) : '');
+    $selectedInterfaces = $cfg['INTERFACES'];
+} else {
+    $selectedInterfaces = '';
 }
 
 $active       = (intval(trim(shell_exec( "[ -f /proc/`cat /var/run/vnstat.pid 2> /dev/null`/exe ] && echo 1 || echo 0 2> /dev/null" ))) === 1);
