@@ -43,13 +43,15 @@ $(function(){
 <input type="hidden" id="COMMAND" name="#command" value="" />
 <div>
 <label>Interfaces to capture</label>
-  : 
+  :
+<select name="INTERFACES" id="interfaces" multiple size="1" style="display:none;">
 <?php
 echo( '<option value="">(ALL)</option>');
 foreach( $interfaces as $interface) {
     echo( mk_option_check($selectedInterfaces, $interface, $interface) );
 }
 ?>
+</select>
 </div>
 <div>
   <input type="submit" value="SAVE">
