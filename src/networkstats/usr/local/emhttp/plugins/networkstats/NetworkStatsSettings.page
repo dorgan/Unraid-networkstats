@@ -47,7 +47,8 @@ $(function(){
 <?php
 echo( '<option value="">(ALL)</option>');
 foreach( $interfaces as $interface) {
-    echo( mk_option_check($selectedInterfaces, $interface, $interface) );}}
+    echo( mk_option_check($selectedInterfaces, $interface, $interface) );
+}
 ?>
 </div>
 <div>
