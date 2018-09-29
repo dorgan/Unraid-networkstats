@@ -1,5 +1,6 @@
-Menu="NetworkStats:1"
-Title="Settings"
+Menu="NetworkStats"
+Title="Network Stats Settings"
+Icon="networkstats.png"
 ---
 <?php
 $plugin = "networkstats";
@@ -7,26 +8,55 @@ $plg_path = "/boot/config/plugins/" . $plugin;
 $cfg_file    = "$plg_path/" . $plugin . ".cfg";
 if (file_exists($cfg_file)) {
     $cfg    = parse_ini_file($cfg_file);
-    $interfaces = isset($cfg['INTERFACES']) ? htmlspecialchars($cfg['INTERFACES']) : '';
+    $selectedInterfaces = $cfg['INTERFACES'];
+} else {
+    $selectedInterfaces = '';
 }
 
 $active       = (intval(trim(shell_exec( "[ -f /proc/`cat /var/run/vnstat.pid 2> /dev/null`/exe ] && echo 1 || echo 0 2> /dev/null" ))) === 1);
 $running        = "<span class='green'>Running</span>";
 $stopped        = "<span class='orange'>Stopped</span>";
 $status    = ($active)    ? $running : $stopped;
-
+exec("ifconfig -s|awk '/^(bond|eth)/{print $1}'",$interfaces);
 ?>
+<script>
+function prepareSettings(form) {
+  var interfaces = '';
+  for (var i=1,item; item=form.INTERFACES.options[i]; i++) {
+    if (item.selected) {
+      if (interfaces.length) interfaces += ',';
+      interfaces += item.value;
+      item.selected = false;
+    }
+  }
+  item = form.interfaces.options[0];
+  item.value = interfaces;
+  item.selected = true;
+}
+$(function(){
+  $('#interfaces').dropdownchecklist({emptyText:'None', width:<?=strstr('gray,azure',$display['theme'])?166:131?>, firstItemChecksAll: true, explicitClose:'...close'});
+});
+</script>
 
-<form markdown="1" name="network_stat_settings" method="POST" action="/update.php" target="progressFrame">
-<div id="title" style="margin-top: -22px;">
-  <span class="left"><img class="icon" src="/plugins/network-stats/icons/network-stats.png"> Inteface Settings</span>
-  <span class="status" id="notify-status">VNSTAT Daemon: <?=$status;?> </span>
-</div>
-<input type="hidden" name="#file" value="network-stats/network-stats.cfg" />
+<form markdown="1" name="network_stat_settings" method="POST" action="/update.php" target="progressFrame" onsubmit="prepareSettings(this)">
+<input type="hidden" name="#file" value="networkstats/networkstats.cfg" />
 <input type="hidden" id="COMMAND" name="#command" value="" />
 <div>
-<label for="interfaces">Interfaces to capture</label>
-  : <input id="interfaces" name="INTERFACES" value="<?= $interfaces ?>">
+<label>Interfaces to capture</label>
+  :
+<select name="INTERFACES" id="interfaces" multiple size="1" style="display:none;">
+<?php
+echo( '<option value="">(ALL)</option>');
+foreach( $interfaces as $interface) {
+    echo( mk_option_check($selectedInterfaces, $interface, $interface) );
+}
+?>
+</select>
+</div>
+<div>
+    <h4>
+        <span class="" id="notify-status">VNSTAT Daemon: <?=$status;?></span>
+    </h4>
 </div>
 <div>
   <input type="submit" value="SAVE">

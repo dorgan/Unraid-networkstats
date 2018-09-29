@@ -1,5 +1,6 @@
 Menu="Stats:3"
 Title="Network Stats"
+Icon="icons/networkstats.png"
 ---
 <?php
 $plugin = "networkstats";
