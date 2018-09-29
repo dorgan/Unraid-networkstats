@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.09.29a">
+  <!ENTITY version   "2018.09.29b">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "2018.09.29b">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -25,6 +25,7 @@
 
     <CHANGES>
     ##&name;
+###2018.09.29b
 ###2018.09.29a
 
 ###2018.09.29 - A bunch of fixes and updates

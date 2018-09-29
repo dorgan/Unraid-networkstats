@@ -14,8 +14,8 @@ if (file_exists($cfg_file)) {
 }
 
 $active       = (intval(trim(shell_exec( "[ -f /proc/`cat /var/run/vnstat.pid 2> /dev/null`/exe ] && echo 1 || echo 0 2> /dev/null" ))) === 1);
-$running        = "<span class='green' id="serviceStatus">Running</span> <a href="/plugins/' . $plugin .'/service.php?$action=stop" class="xhr">stop</a>";
-$stopped        = "<span class='orange' id="serviceStatus">Stopped</span> <a href="/plugins/' . $plugin .'/service.php?$action=stop" class="xhr">start</a>";
+$running        = "<span class='green' id="serviceStatus">Running</span> <a href="/plugins/' . $plugin .'/service.php?action=stop" class="xhr">stop</a>";
+$stopped        = "<span class='orange' id="serviceStatus">Stopped</span> <a href="/plugins/' . $plugin .'/service.php$action=start" class="xhr">start</a>";
 $status    = ($active)    ? $running : $stopped;
 exec("ifconfig -s|awk '/^(bond|eth)/{print $1}'",$interfaces);
 ?>
@@ -35,12 +35,6 @@ function prepareSettings(form) {
 }
 $(function(){
   $('#interfaces').dropdownchecklist({emptyText:'None', width:<?=strstr('gray,azure',$display['theme'])?166:131?>, firstItemChecksAll: true, explicitClose:'...close'});
-  $('.hxr').on('click', function(e) {
-    e.preventDefault();
-    $.get($(this).attr('href'), function(data) {
-      $('#serviceStatus').replace(data);
-    });
-  });
 });
 </script>
 
@@ -68,3 +62,18 @@ foreach( $interfaces as $interface) {
   <input type="submit" value="SAVE">
 </div>
 </form>
+<script>
+$(function() {
+  function bindAjax() {
+    $('.xhr').on('click', function(e) {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      $.get($(this).attr('href'), function(data) {
+        $('#serviceStatus').replaceWith(data);
+        bindAjax();
+      });
+    });
+  }
+  bindAjax();
+});
+</script>
