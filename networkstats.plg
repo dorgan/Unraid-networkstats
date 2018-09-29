@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.09.27d">
+  <!ENTITY version   "2018.09.29">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "correct-icons">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -24,8 +24,10 @@
 
     <CHANGES>
     ##&name;
-###2018.09.28 - Changing icons
-  - Correcting icons sizes
+###2018.09.29 - A bunch of fixes and updates
+  - Changing icons and Correcting sizes
+  - Update settings to detect interfaces
+  - Update install script to detect settings
 
 ###2018.09.27d - Correction to start vnstat
 
@@ -113,9 +115,17 @@
             # Creating some directories
             if [ ! -d "/var/lib/vnstat" ]; then
                 mkdir /var/lib/vnstat
-                vnstat --create -i br0
-                vnstat --create -i bond0
             fi
+            interfaces=($(ifconfig -s|awk '/^(bond|eth)/{print $1}'))
+            for i in "${interfaces[@]}"
+            do
+                if [ ! -f "/var/lib/${i}" ]; then
+                    vnstat --create -i "${i}"
+                fi
+            done
+     
+            strInterfaces=$(IFS=, ; echo "${interfaces[*]}")
+            echo "INTERFACES=\"${strInterfaces}\"" > /boot/config/plugins/&name;/&name;.cfg
 
             # restart vnstat
             /etc/rc.d/rc.vnstat restart
