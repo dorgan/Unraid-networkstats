@@ -24,10 +24,12 @@
 
     <CHANGES>
     ##&name;
+
 ###2018.09.29 - A bunch of fixes and updates
   - Changing icons and Correcting sizes
   - Update settings to detect interfaces
   - Update install script to detect settings
+
 
 ###2018.09.27d - Correction to start vnstat
 
