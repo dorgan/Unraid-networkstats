@@ -5,7 +5,7 @@
   <!ENTITY author    "Donald Organ">
   <!ENTITY version   "2018.09.29c">
   <!ENTITY launch    "Settings/NetworkStats">
-  <!ENTITY branch    "2018.09.29b">
+  <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
   <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
   <!ENTITY pluginURL "$gitURL;/&name;.plg">
@@ -25,17 +25,13 @@
 
     <CHANGES>
     ##&name;
-###2018.09.29c
-###2018.09.29b
-###2018.09.29a
+###2018.09.29c - More Tweaks
+  - Add ability for user to start/stop vnstat
 
 ###2018.09.29 - A bunch of fixes and updates
   - Changing icons and Correcting sizes
   - Update settings to detect interfaces
   - Update install script to detect settings
-
-
-###2018.09.28
 
 ###2018.09.27d - Correction to start vnstat
 
