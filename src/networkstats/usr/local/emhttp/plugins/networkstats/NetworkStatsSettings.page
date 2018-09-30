@@ -13,9 +13,9 @@ if (file_exists($cfg_file)) {
     $selectedInterfaces = '';
 }
 
-$active       = (intval(trim(shell_exec( "[ -f /proc/`cat /var/run/vnstat.pid 2> /dev/null`/exe ] && echo 1 || echo 0 2> /dev/null" ))) === 1);
-$running        = "<span class='green' id="serviceStatus">Running</span> <a href="/plugins/' . $plugin .'/service.php?action=stop" class="xhr">stop</a>";
-$stopped        = "<span class='orange' id="serviceStatus">Stopped</span> <a href="/plugins/' . $plugin .'/service.php$action=start" class="xhr">start</a>";
+$active       = (intval(trim(shell_exec( "[ -f /proc/`cat /var/run/vnstat/vnstat.pid 2> /dev/null`/exe ] && echo 1 || echo 0 2> /dev/null" ))) === 1);
+$running        = '<span class="green" id="serviceStatus">Running <a href="/plugins/' . $plugin .'/service.php?action=stop" class="xhr">stop</a></span>';
+$stopped        = '<span class="orange" id="serviceStatus">Stopped <a href="/plugins/' . $plugin .'/service.php?action=start" class="xhr">start</a></span>';
 $status    = ($active)    ? $running : $stopped;
 exec("ifconfig -s|awk '/^(bond|eth)/{print $1}'",$interfaces);
 ?>
