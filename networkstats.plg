@@ -3,9 +3,9 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.10.02">
+  <!ENTITY version   "2018.10.03">
   <!ENTITY launch    "Settings/NetworkStats">
-  <!ENTITY branch    "master">
+  <!ENTITY branch    "2018.10.03">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
   <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
   <!ENTITY pluginURL "$gitURL;/&name;.plg">
@@ -26,6 +26,7 @@
 
     <CHANGES>
     ##&name;
+###2018.10.03
 
 ###2018.10.02 -  More Tweaks
   - Add ability for user to start/stop vnstat
@@ -93,13 +94,14 @@
             }
 
             # Install vnstat
-            if [ ! -f "/usr/bin/vnstat" ]; then
+            if [ ! -f "/var/log/packages/&vnstatFile;" ]; then
                 download_install &vnstatFile; &vnstatFileMD5;
-                chmod +x /etc/rc.d/rc.vnstatd
                 # make daemon executable
                 chmod ugo+x /etc/rc.d/rc.vnstat
-                # start daemon
-                /etc/rc.d/rc.vnstat start
+            fi
+
+            if [ "&version;" -eq "2018.10.03" ]; then
+                sed -i -e 's/\/var\/run\/vnstat.pid/\/var\/run\/vnstat\/vnstat.pid/g' /etc/rc.d/rc.vnstat
             fi
 
             if [ ! -d "/mnt/user/appdata/vnstat" ]; then
