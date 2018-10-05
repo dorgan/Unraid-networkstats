@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.10.03">
+  <!ENTITY version   "2018.10.05">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -26,7 +26,9 @@
 
     <CHANGES>
     ##&name;
-###2018.10.03
+
+###2018.10.05 - Fix detection of vnstat daemon
+
 ###2018.10.03 - Fix borked plugin
   - Fix issues where vnstat service wasnt starting
 
@@ -100,12 +102,10 @@
                 download_install &vnstatFile; &vnstatFileMD5;
                 # make daemon executable
                 chmod ugo+x /etc/rc.d/rc.vnstat
-                sed -i -e 's/\/var\/run\/vnstat.pid/\/var\/run\/vnstat\/vnstat.pid/g' /etc/rc.d/rc.vnstat
             fi
 
-            if [ "&version;" -eq "2018.10.03" ]; then
-                sed -i -e 's/\/var\/run\/vnstat.pid/\/var\/run\/vnstat\/vnstat.pid/g' /etc/rc.d/rc.vnstat
-            fi
+            mkdir -p /var/run/vnstat
+            sed -i -e 's/\/var\/run\/vnstat.pid/\/var\/run\/vnstat\/vnstat.pid/g' /etc/rc.d/rc.vnstat
 
             if [ ! -d "/mnt/user/appdata/vnstat" ]; then
                 mkdir -p &appdata;/vnstat/db
