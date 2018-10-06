@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.10.06">
+  <!ENTITY version   "2018.10.06a">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -115,8 +115,8 @@
                 mkdir -p &appdata;/vnstat/db
 	    fi
 
-            cp /usr/local/emhttp/plugins/&name;/vnstat.conf /mnt/user/appdata/vnstat/
-            cp /mnt/user/appdata/vnstat/vnstat.conf /etc/
+            cp /usr/local/emhttp/plugins/&name;/vnstat.conf /mnt/cache/appdata/vnstat/
+            cp /mnt/cache/appdata/vnstat/vnstat.conf /etc/
 
             # Verify and install plugin package
             sum1=$(/usr/bin/md5sum /boot/config/plugins/&name;/&plgNAME;.txz)
