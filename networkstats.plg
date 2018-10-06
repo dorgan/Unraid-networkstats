@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.10.06b">
+  <!ENTITY version   "2018.10.06c">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -12,7 +12,7 @@
   <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
   <!ENTITY plgPATH   "/boot/config/plugins/&name;">
   <!ENTITY plgNAME   "&name;-&version;-x86_64-1">
-  <!ENTITY appdata   "/mnt/cache/appdata">
+  <!ENTITY appdata   "/mnt/user/appdata">
   <!ENTITY vnstatFile "vnstat-1.18-x86_64-1_slonly.txz">
   <!ENTITY vnstatFileMD5 "e7719e1bdc199653a8804673059ffe61">
 ]>
@@ -26,6 +26,9 @@
 
     <CHANGES>
     ##&name;
+    
+###2018.10.06c - Fixing plugin to work without a cache drive
+
 ###2018.10.06b - adjusting sequence of commands
 
 ###2018.10.06a - Adjusting file paths
@@ -114,14 +117,16 @@
             /etc/rc.d/rc.vnstat stop
 
             mkdir -p /var/run/vnstat
+            chmod +w /var/run/vnstat
+            
             sed -i -e 's/\/var\/run\/vnstat.pid/\/var\/run\/vnstat\/vnstat.pid/g' /etc/rc.d/rc.vnstat
 
-            if [ ! -d "/mnt/user/appdata/vnstat" ]; then
+            if [ ! -d "&appdata;/vnstat" ]; then
                 mkdir -p &appdata;/vnstat/db
 	        fi
 
-            cp -f /usr/local/emhttp/plugins/&name;/vnstat.conf /mnt/cache/appdata/vnstat/
-            cp -f /mnt/cache/appdata/vnstat/vnstat.conf /etc/vnstat.conf
+            cp -f /usr/local/emhttp/plugins/&name;/vnstat.conf &appdata;/vnstat/
+            cp -f /usr/local/emhttp/plugins/&name;/vnstat.conf /etc/vnstat.conf
 
             # Verify and install plugin package
             sum1=$(/usr/bin/md5sum /boot/config/plugins/&name;/&plgNAME;.txz)
