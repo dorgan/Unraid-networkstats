@@ -3,12 +3,12 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.10.05">
+  <!ENTITY version   "2018.10.06">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
   <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
-  <!ENTITY pluginURL "$gitURL;/&name;.plg">
+  <!ENTITY pluginURL "&gitURL;/&name;.plg">
   <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
   <!ENTITY plgPATH   "/boot/config/plugins/&name;">
   <!ENTITY plgNAME   "&name;-&version;-x86_64-1">
@@ -26,6 +26,10 @@
 
     <CHANGES>
     ##&name;
+	    
+###2018.10.06 - Want this damn thing to work
+  - Correct pluginURL reference
+  - fix pointing to correct vnstat.conf file
 
 ###2018.10.05 - Fix detection of vnstat daemon
 
@@ -109,10 +113,10 @@
 
             if [ ! -d "/mnt/user/appdata/vnstat" ]; then
                 mkdir -p &appdata;/vnstat/db
-                cp /usr/local/emhttp/plugins/&name;/vnstat.conf /mnt/user/appdata/vnstat/
-                cp /mnt/user/appdata/vnstat/vnstat.conf /etc/
-                echo "cp &appdata;/vnstat/vnstat.conf /etc/ >> /boot/config/go"
-            fi
+	    fi
+
+            cp /usr/local/emhttp/plugins/&name;/vnstat.conf /mnt/user/appdata/vnstat/
+            cp /mnt/user/appdata/vnstat/vnstat.conf /etc/
 
             # Verify and install plugin package
             sum1=$(/usr/bin/md5sum /boot/config/plugins/&name;/&plgNAME;.txz)
@@ -165,12 +169,15 @@
     <FILE Run="/bin/bash" Method="remove">
         <INLINE>
             #stop daemon
-            /etc/rc.d/rc.vnstatd stop
+            /etc/rc.d/rc.vnstat stop
 	    sleep 1
 		
             # Remove plugin config files
-            rm -rf "&plgPATH;/*.conf"
+            rm -rf "/etc/vnstat.conf"
 
+            # Remove database
+            rm -rf "&appdata;/networkstats/"
+		
             # uninstall plugin
 	    removepkg &plgPATH;/*.txz
 
