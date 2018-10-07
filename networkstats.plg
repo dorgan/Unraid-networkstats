@@ -25,6 +25,7 @@
 
     <CHANGES>
     ##&name;
+
 ###2018.10.07 - Update plugin to use docker appdata path
     
 ###2018.10.06c - Fixing plugin to work without a cache drive
@@ -119,23 +120,11 @@
             mkdir -p /var/run/vnstat
             chmod +w /var/run/vnstat
             
-            sed -i -e 's/\/var\/run\/vnstat.pid/\/var\/run\/vnstat\/vnstat.pid/g' /etc/rc.d/rc.vnstat
+            
 
             source /boot/config/docker.cfg
             
-            if [ ! -d "${DOCKER_APP_CONFIG_PATH}/vnstat" ]; then
-                mkdir -p "${DOCKER_APP_CONFIG_PATH}vnstat/db"
-	        fi
-
-            if [ "${DOCKER_APP_CONFIG_PATH}" neq "/mnt/user/appdata/" ]; then
-                if [ -d "/mnt/user/appdata/vnstat/" ]; then
-                    mv -f /mnt/user/appdata/vnstat/* "${DOCKER_APP_CONFIG_PATH}"
-                    mv -f /mnt/user/appdata/vnstat/.* "${DOCKER_APP_CONFIG_PATH}"
-                fi
-            fi
-
-            cp -f /usr/local/emhttp/plugins/&name;/vnstat.conf "${DOCKER_APP_CONFIG_PATH}/vnstat/"
-            cp -f /usr/local/emhttp/plugins/&name;/vnstat.conf /etc/vnstat.conf
+            
 
             # Verify and install plugin package
             sum1=$(/usr/bin/md5sum /boot/config/plugins/&name;/&plgNAME;.txz)
@@ -147,6 +136,21 @@
                 exit 1
             else
                 upgradepkg --install-new &plgPATH;/&plgNAME;.txz
+            fi
+
+            sed -i -e 's/\/mnt\/user\/appdata\/&name;\/db\//${DOCKER_APP_CONFIG_PATH}&name;\/db\//g' /usr/local/emhttp/plugins/&name;/vnstat.conf
+            cp -f /usr/local/emhttp/plugins/&name;/vnstat.conf /etc/vnstat.conf
+            sed -i -e 's/\/var\/run\/vnstat.pid/\/var\/run\/vnstat\/vnstat.pid/g' /etc/rc.d/rc.vnstat
+
+            if [ ! -d "${DOCKER_APP_CONFIG_PATH}/vnstat" ]; then
+                mkdir -p "${DOCKER_APP_CONFIG_PATH}vnstat/db"
+	        fi
+
+            if [ "${DOCKER_APP_CONFIG_PATH}" neq "/mnt/user/appdata/" ]; then
+                if [ -d "/mnt/user/appdata/vnstat/" ]; then
+                    mv -f /mnt/user/appdata/vnstat/* "${DOCKER_APP_CONFIG_PATH}"
+                    mv -f /mnt/user/appdata/vnstat/.* "${DOCKER_APP_CONFIG_PATH}"
+                fi
             fi
 
             # Cleaning old source files
