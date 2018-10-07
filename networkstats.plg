@@ -3,16 +3,15 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.10.06c">
+  <!ENTITY version   "2018.10.07">
   <!ENTITY launch    "Settings/NetworkStats">
-  <!ENTITY branch    "master">
+  <!ENTITY branch    "2018.10.07">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
   <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
   <!ENTITY pluginURL "&gitURL;/&name;.plg">
   <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
   <!ENTITY plgPATH   "/boot/config/plugins/&name;">
   <!ENTITY plgNAME   "&name;-&version;-x86_64-1">
-  <!ENTITY appdata   "/mnt/user/appdata">
   <!ENTITY vnstatFile "vnstat-1.18-x86_64-1_slonly.txz">
   <!ENTITY vnstatFileMD5 "e7719e1bdc199653a8804673059ffe61">
 ]>
@@ -26,6 +25,7 @@
 
     <CHANGES>
     ##&name;
+###2018.10.07 - Update plugin to use docker appdata path
     
 ###2018.10.06c - Fixing plugin to work without a cache drive
 
@@ -121,11 +121,20 @@
             
             sed -i -e 's/\/var\/run\/vnstat.pid/\/var\/run\/vnstat\/vnstat.pid/g' /etc/rc.d/rc.vnstat
 
-            if [ ! -d "&appdata;/vnstat" ]; then
-                mkdir -p &appdata;/vnstat/db
+            source /boot/config/docker.cfg
+            
+            if [ ! -d "${DOCKER_APP_CONFIG_PATH}/vnstat" ]; then
+                mkdir -p "${DOCKER_APP_CONFIG_PATH}vnstat/db"
 	        fi
 
-            cp -f /usr/local/emhttp/plugins/&name;/vnstat.conf &appdata;/vnstat/
+            if [ "${DOCKER_APP_CONFIG_PATH}" neq "/mnt/user/appdata/" ]; then
+                if [ -d "/mnt/user/appdata/vnstat/" ]; then
+                    mv -f /mnt/user/appdata/vnstat/* "${DOCKER_APP_CONFIG_PATH}"
+                    mv -f /mnt/user/appdata/vnstat/.* "${DOCKER_APP_CONFIG_PATH}"
+                fi
+            fi
+
+            cp -f /usr/local/emhttp/plugins/&name;/vnstat.conf "${DOCKER_APP_CONFIG_PATH}/vnstat/"
             cp -f /usr/local/emhttp/plugins/&name;/vnstat.conf /etc/vnstat.conf
 
             # Verify and install plugin package
@@ -184,15 +193,17 @@
             # Remove plugin config files
             rm -rf "/etc/vnstat.conf"
 
+            source /boot/config/docker.cfg
+
             # Remove database
-            rm -rf "&appdata;/networkstats/"
+            rm -rf "${DOCKER_APP_CONFIG_PATH}/networkstats/"
 		
             # uninstall plugin
-	    removepkg &plgPATH;/*.txz
+	        removepkg &plgPATH;/*.txz
 
-	    rm -rf &emhttp;
+	        rm -rf &emhttp;
             rm -rf &plgPATH;/*.txz \
-		&plgPATH;/*.md5
+		        &plgPATH;/*.md5
 
             echo ""
             echo "-----------------------------------------------------------"
