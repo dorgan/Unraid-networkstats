@@ -5,7 +5,7 @@
   <!ENTITY author    "Donald Organ">
   <!ENTITY version   "2018.10.07">
   <!ENTITY launch    "Settings/NetworkStats">
-  <!ENTITY branch    "2018.10.07">
+  <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
   <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
   <!ENTITY pluginURL "&gitURL;/&name;.plg">
