@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.10.07">
+  <!ENTITY version   "2018.10.07a">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -25,6 +25,7 @@
 
     <CHANGES>
     ##&name;
+###2018.10.07a - Update vnstat.conf and set MaxBandwidth to 0
 
 ###2018.10.07 - Update plugin to use docker appdata path
     
