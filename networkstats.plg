@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.10.07a">
+  <!ENTITY version   "2018.10.07b">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -25,6 +25,10 @@
 
     <CHANGES>
     ##&name;
+###2018.10.07b - Couple bug fixes
+  - Fix mkdir command in install
+  - Fix incorrect substitution inside of vnstat.conf
+  
 ###2018.10.07a - Update vnstat.conf and set MaxBandwidth to 0
 
 ###2018.10.07 - Update plugin to use docker appdata path
@@ -139,20 +143,13 @@
                 upgradepkg --install-new &plgPATH;/&plgNAME;.txz
             fi
 
-            sed -i -e 's/\/mnt\/user\/appdata\/&name;\/db\//${DOCKER_APP_CONFIG_PATH}&name;\/db\//g' /usr/local/emhttp/plugins/&name;/vnstat.conf
+            sed -i -e "s;/mnt/user/appdata/&name;/db/;${DOCKER_APP_CONFIG_PATH}&name;/db/;g" /usr/local/emhttp/plugins/&name;/vnstat.conf
             cp -f /usr/local/emhttp/plugins/&name;/vnstat.conf /etc/vnstat.conf
-            sed -i -e 's/\/var\/run\/vnstat.pid/\/var\/run\/vnstat\/vnstat.pid/g' /etc/rc.d/rc.vnstat
+            sed -i -e "s;/var/run/vnstat.pid;/var/run/vnstat/vnstat.pid;g" /etc/rc.d/rc.vnstat
 
-            if [ ! -d "${DOCKER_APP_CONFIG_PATH}/vnstat" ]; then
-                mkdir -p "${DOCKER_APP_CONFIG_PATH}vnstat/db"
+            if [ ! -d "${DOCKER_APP_CONFIG_PATH}vnstat" ]; then
+                mkdir -p "${DOCKER_APP_CONFIG_PATH}networkstats/db"
 	        fi
-
-            if [ "${DOCKER_APP_CONFIG_PATH}" neq "/mnt/user/appdata/" ]; then
-                if [ -d "/mnt/user/appdata/vnstat/" ]; then
-                    mv -f /mnt/user/appdata/vnstat/* "${DOCKER_APP_CONFIG_PATH}"
-                    mv -f /mnt/user/appdata/vnstat/.* "${DOCKER_APP_CONFIG_PATH}"
-                fi
-            fi
 
             # Cleaning old source files
             find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
