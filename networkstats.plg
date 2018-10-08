@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.10.07c">
+  <!ENTITY version   "2018.10.07d">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -25,6 +25,8 @@
 
     <CHANGES>
     ##&name;
+
+###2018.10.07d - Fix out of sync version
 
 ###2018.10.07c - Fix pathing inside vnstat.conf
 
