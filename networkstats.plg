@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.10.07b">
+  <!ENTITY version   "2018.10.07c">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -25,6 +25,9 @@
 
     <CHANGES>
     ##&name;
+
+###2018.10.07c - Fix pathing inside vnstat.conf
+
 ###2018.10.07b - Couple bug fixes
   - Fix mkdir command in install
   - Fix incorrect substitution inside of vnstat.conf
@@ -123,13 +126,9 @@
             /etc/rc.d/rc.vnstat stop
 
             mkdir -p /var/run/vnstat
-            chmod +w /var/run/vnstat
-            
-            
+            chmod +w /var/run/vnstat   
 
             source /boot/config/docker.cfg
-            
-            
 
             # Verify and install plugin package
             sum1=$(/usr/bin/md5sum /boot/config/plugins/&name;/&plgNAME;.txz)
@@ -143,12 +142,12 @@
                 upgradepkg --install-new &plgPATH;/&plgNAME;.txz
             fi
 
-            sed -i -e "s;/mnt/user/appdata/&name;/db/;${DOCKER_APP_CONFIG_PATH}&name;/db/;g" /usr/local/emhttp/plugins/&name;/vnstat.conf
+            sed -i -e "s;/mnt/user/appdata/vnstat/db/;${DOCKER_APP_CONFIG_PATH}/&name;/db/;g" /usr/local/emhttp/plugins/&name;/vnstat.conf
             cp -f /usr/local/emhttp/plugins/&name;/vnstat.conf /etc/vnstat.conf
             sed -i -e "s;/var/run/vnstat.pid;/var/run/vnstat/vnstat.pid;g" /etc/rc.d/rc.vnstat
 
-            if [ ! -d "${DOCKER_APP_CONFIG_PATH}vnstat" ]; then
-                mkdir -p "${DOCKER_APP_CONFIG_PATH}networkstats/db"
+            if [ ! -d "${DOCKER_APP_CONFIG_PATH}/&name;" ]; then
+                mkdir -p "${DOCKER_APP_CONFIG_PATH}/&name;/db"
 	        fi
 
             # Cleaning old source files
@@ -198,7 +197,7 @@
             source /boot/config/docker.cfg
 
             # Remove database
-            rm -rf "${DOCKER_APP_CONFIG_PATH}/networkstats/"
+            rm -rf "${DOCKER_APP_CONFIG_PATH}&name;/"
 		
             # uninstall plugin
 	        removepkg &plgPATH;/*.txz
