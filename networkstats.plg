@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.10.10a">
+  <!ENTITY version   "2018.10.10">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -25,7 +25,6 @@
 
     <CHANGES>
     ##&name;
-###2018.10.10a
 ###2018.10.10 - Fix breaking unRAID
   - Remove using DOCKER_CONFIG_APP_PATH
   - revert to use /var/lib/vnstat for vnstat db
