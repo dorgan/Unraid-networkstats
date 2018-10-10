@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.10.07d">
+  <!ENTITY version   "2018.10.10">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -25,6 +25,10 @@
 
     <CHANGES>
     ##&name;
+###2018.10.10 - Fix breaking unRAID
+  - Remove using DOCKER_CONFIG_APP_PATH
+  - revert to use /var/lib/vnstat for vnstat db
+  - future release I will look to make persistent across reboots and utilize events to copy data in/out of flash
 
 ###2018.10.07d - Fix out of sync version
 
@@ -128,9 +132,7 @@
             /etc/rc.d/rc.vnstat stop
 
             mkdir -p /var/run/vnstat
-            chmod +w /var/run/vnstat   
-
-            source /boot/config/docker.cfg
+            chmod +w /var/run/vnstat
 
             # Verify and install plugin package
             sum1=$(/usr/bin/md5sum /boot/config/plugins/&name;/&plgNAME;.txz)
@@ -144,13 +146,8 @@
                 upgradepkg --install-new &plgPATH;/&plgNAME;.txz
             fi
 
-            sed -i -e "s;/mnt/user/appdata/vnstat/db/;${DOCKER_APP_CONFIG_PATH}/&name;/db/;g" /usr/local/emhttp/plugins/&name;/vnstat.conf
             cp -f /usr/local/emhttp/plugins/&name;/vnstat.conf /etc/vnstat.conf
             sed -i -e "s;/var/run/vnstat.pid;/var/run/vnstat/vnstat.pid;g" /etc/rc.d/rc.vnstat
-
-            if [ ! -d "${DOCKER_APP_CONFIG_PATH}/&name;" ]; then
-                mkdir -p "${DOCKER_APP_CONFIG_PATH}/&name;/db"
-	        fi
 
             # Cleaning old source files
             find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
@@ -196,10 +193,7 @@
             # Remove plugin config files
             rm -rf "/etc/vnstat.conf"
 
-            source /boot/config/docker.cfg
-
-            # Remove database
-            rm -rf "${DOCKER_APP_CONFIG_PATH}&name;/"
+            rm -rf /var/lib/vnstat
 		
             # uninstall plugin
 	        removepkg &plgPATH;/*.txz
