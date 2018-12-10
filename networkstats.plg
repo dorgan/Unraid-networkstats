@@ -101,6 +101,8 @@
                 /etc/rc.d/rc.vnstat start
             fi
 
+            sed -i -e 's@BandwidthDetection 1@BandwidthDetection 0@g' /etc/vnstat.conf
+
             # Verify and install plugin package
             sum1=$(/usr/bin/md5sum /boot/config/plugins/&name;/&plgNAME;.txz)
             sum2=$(/usr/bin/cat /boot/config/plugins/&name;/&plgNAME;.md5)

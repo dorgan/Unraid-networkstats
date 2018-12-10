@@ -1,0 +1,6 @@
+Menu="stats"
+Type="xmenu"
+Title="System Stats"
+Icon="stats.png"
+Code="f1fe"
+Tabs="true"
