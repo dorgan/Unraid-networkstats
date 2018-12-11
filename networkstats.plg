@@ -3,12 +3,12 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.09.29">
+  <!ENTITY version   "2018.12.11a">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
   <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
-  <!ENTITY pluginURL "$gitURL;/&name;.plg">
+  <!ENTITY pluginURL "&gitURL;/&name;.plg">
   <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
   <!ENTITY plgPATH   "/boot/config/plugins/&name;">
   <!ENTITY plgNAME   "&name;-&version;-x86_64-1">
@@ -25,14 +25,55 @@
 
     <CHANGES>
     ##&name;
+###2018.12.11a
+ - Correcting issue with Stats.page
+
+###2018.12.11
+  - No longer need dynamix plugin installed
+  - Fi vnstat config issue
+
+###2018.10.10a - Fix switching tabs
+
+###2018.10.10 - Fix breaking unRAID
+  - Remove using DOCKER_CONFIG_APP_PATH
+  - revert to use /var/lib/vnstat for vnstat db
+  - future release I will look to make persistent across reboots and utilize events to copy data in/out of flash
+
+###2018.10.07d - Fix out of sync version
+
+###2018.10.07c - Fix pathing inside vnstat.conf
+
+###2018.10.07b - Couple bug fixes
+  - Fix mkdir command in install
+  - Fix incorrect substitution inside of vnstat.conf
+  
+###2018.10.07a - Update vnstat.conf and set MaxBandwidth to 0
+
+###2018.10.07 - Update plugin to use docker appdata path
+    
+###2018.10.06c - Fixing plugin to work without a cache drive
+
+###2018.10.06b - adjusting sequence of commands
+
+###2018.10.06a - Adjusting file paths
+	    
+###2018.10.06 - Want this damn thing to work
+  - Correct pluginURL reference
+  - fix pointing to correct vnstat.conf file
+
+###2018.10.05 - Fix detection of vnstat daemon
+
+###2018.10.03 - Fix borked plugin
+  - Fix issues where vnstat service wasnt starting
+
+###2018.10.02 -  More Tweaks
+  - Add ability for user to start/stop vnstat
+  - Fix detecting of vnstat daemon
 
 ###2018.09.29 - A bunch of fixes and updates
   - Changing icons and Correcting sizes
   - Update settings to detect interfaces
   - Update install script to detect settings
-
-
-###2018.09.28
 
 ###2018.09.27d - Correction to start vnstat
 
@@ -91,17 +132,18 @@
             }
 
             # Install vnstat
-            if [ ! -f "usr/bin/vnstat" ]; then
+            if [ ! -f "/var/log/packages/&vnstatFile;" ]; then
                 download_install &vnstatFile; &vnstatFileMD5;
-                chmod +x /etc/rc.d/rc.vnstatd
-                sed -i -e 's@Interface "eth0"@Interface "bond0"@g' /etc/vnstat.conf
                 # make daemon executable
                 chmod ugo+x /etc/rc.d/rc.vnstat
-                # start daemon
-                /etc/rc.d/rc.vnstat start
             fi
 
             sed -i -e 's@BandwidthDetection 1@BandwidthDetection 0@g' /etc/vnstat.conf
+            /etc/rc.d/rc.vnstat stop
+
+            mkdir -p /var/run/vnstat
+            chmod +w /var/run/vnstat
+
 
             # Verify and install plugin package
             sum1=$(/usr/bin/md5sum /boot/config/plugins/&name;/&plgNAME;.txz)
@@ -115,6 +157,9 @@
                 upgradepkg --install-new &plgPATH;/&plgNAME;.txz
             fi
 
+            cp -f /usr/local/emhttp/plugins/&name;/vnstat.conf /etc/vnstat.conf
+            sed -i -e "s;/var/run/vnstat.pid;/var/run/vnstat/vnstat.pid;g" /etc/rc.d/rc.vnstat
+
             # Cleaning old source files
             find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
             find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
@@ -122,21 +167,20 @@
             interfaces=($(ifconfig -s|awk '/^(bond|eth)/{print $1}'))
 
             # Creating some directories
-            if [ ! -d "/var/lib/vnstat" ]; then
-                mkdir /var/lib/vnstat
+            if [ ! -f "/boot/config/plugins/&name;/&name;.cfg" ]; then
                 strInterfaces=$(IFS=, ; echo "${interfaces[*]}")
                 echo "INTERFACES=\"${strInterfaces}\"" > /boot/config/plugins/&name;/&name;.cfg
-            fi
 
-            for i in "${interfaces[@]}"
-            do
-                if [ ! -f "/var/lib/${i}" ]; then
-                    vnstat --create -i "${i}"
-                fi
-            done
+                for i in "${interfaces[@]}"
+                do
+                    if [ ! -f "/var/lib/${i}" ]; then
+                        vnstat --create -i "${i}"
+                    fi
+                done
+            fi
      
             # restart vnstat
-            /etc/rc.d/rc.vnstat restart
+            /etc/rc.d/rc.vnstat start
 
             echo ""
             echo "-----------------------------------------------------------"
@@ -154,18 +198,20 @@
     <FILE Run="/bin/bash" Method="remove">
         <INLINE>
             #stop daemon
-            /etc/rc.d/rc.vnstatd stop
+            /etc/rc.d/rc.vnstat stop
 	    sleep 1
 		
             # Remove plugin config files
-            rm -rf "&plgPATH;/*.conf"
+            rm -rf "/etc/vnstat.conf"
 
+            rm -rf /var/lib/vnstat
+		
             # uninstall plugin
-	    removepkg &plgPATH;/*.txz
+	        removepkg &plgPATH;/*.txz
 
-	    rm -rf &emhttp;
+	        rm -rf &emhttp;
             rm -rf &plgPATH;/*.txz \
-		&plgPATH;/*.md5
+		        &plgPATH;/*.md5
 
             echo ""
             echo "-----------------------------------------------------------"

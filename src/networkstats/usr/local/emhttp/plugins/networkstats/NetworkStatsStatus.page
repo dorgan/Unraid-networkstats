@@ -22,3 +22,9 @@ foreach ($interfaces as $interface) {
 }
 ?>
 </table>
+
+<script>
+$('#tab3').bind('click', function() {
+  $('span.status').hide();
+});
+</script>
