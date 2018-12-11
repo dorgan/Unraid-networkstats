@@ -138,10 +138,12 @@
                 chmod ugo+x /etc/rc.d/rc.vnstat
             fi
 
+            sed -i -e 's@BandwidthDetection 1@BandwidthDetection 0@g' /etc/vnstat.conf
             /etc/rc.d/rc.vnstat stop
 
             mkdir -p /var/run/vnstat
             chmod +w /var/run/vnstat
+
 
             # Verify and install plugin package
             sum1=$(/usr/bin/md5sum /boot/config/plugins/&name;/&plgNAME;.txz)

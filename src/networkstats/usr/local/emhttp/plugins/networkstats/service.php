@@ -1,4 +1,5 @@
 <?php
+
     $plugin = 'networkstats';
 
     if (isset($_GET['action'])) {
@@ -12,8 +13,10 @@
             $status = '<span class="green" id="serviceStatus">Running <a href="/plugins/' . $plugin .'/service.php?action=stop" class="xhr">stop</a></span>';
         } else {
             $status= '<span class="orange" id="serviceStatus">Stopped <a href="/plugins/' . $plugin .'/service.php?action=start" class="xhr">start</a></span>';
+
         }
 
         echo($status);
     }
+
 ?>
