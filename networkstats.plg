@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2018.12.11b">
+  <!ENTITY version   "2019.02.11">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -25,7 +25,9 @@
 
     <CHANGES>
     ##&name;
-###2018.12.11b
+###2019.02.11
+ - Correcting image output issue
+
 ###2018.12.11a
  - Correcting issue with Stats.page
 
