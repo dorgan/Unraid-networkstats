@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2019.02.11">
+  <!ENTITY version   "2019.12.24">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -25,6 +25,9 @@
 
     <CHANGES>
     ##&name;
+###2019.12.24
+ - Updated MD5 hash of vnstat package
+
 ###2019.02.11
  - Correcting image output issue
 
