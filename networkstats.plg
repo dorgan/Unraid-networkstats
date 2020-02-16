@@ -3,17 +3,17 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2019.12.24a">
+  <!ENTITY version   "2020.02.04">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
-  <!ENTITY vnstatURL "https://slackonly.com/pub/packages/14.2-x86_64/network/vnstat">
+  <!ENTITY vnstatURL "&gitURL;/">
   <!ENTITY pluginURL "&gitURL;/&name;.plg">
   <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
   <!ENTITY plgPATH   "/boot/config/plugins/&name;">
   <!ENTITY plgNAME   "&name;-&version;-x86_64-1">
-  <!ENTITY vnstatFile "vnstat-2.4-x86_64-1_slonly.txz">
-  <!ENTITY vnstatFileMD5 "f6362e0921c85f648921e72b61435d0a">
+  <!ENTITY vnstatFile "vnstat-2.5-x86_64-1_slonly.txz">
+  <!ENTITY vnstatFileMD5 "f03c5244bcbb602685d50fb4e67a6997">
 ]>
 
 <PLUGIN  name="&name;"
@@ -25,6 +25,11 @@
 
     <CHANGES>
     ##&name;
+###2020.02.04
+###2020.02.04
+###2020.02.04
+ - Move vnstats package to be apart of the plugin, this way their releases do not break the plugin
+
 ###2019.12.24a
  - Updating vnstats to version 2.4
 
