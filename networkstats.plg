@@ -25,10 +25,6 @@
 
     <CHANGES>
     ##&name;
-###2020.02.04
-###2020.02.04
-###2020.02.04
- - Move vnstats package to be apart of the plugin, this way their releases do not break the plugin
 
 ###2019.12.24a
  - Updating vnstats to version 2.4
