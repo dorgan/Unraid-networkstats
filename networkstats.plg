@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2020.04.14">
+  <!ENTITY version   "2020.04.14a">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -25,6 +25,9 @@
 
     <CHANGES>
     ##&name;
+###2020.04.14a
+ - Longer interface names were getting truncated, this is now fixed
+
 ###2020.04.14
  - Add ability to track more interfaces
 
@@ -179,7 +182,7 @@
             find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
             find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
-            interfaces=($(ifconfig -s|awk '/^(bond|eth|veth|br|vnet|wg)/{print $1}'))
+            interfaces=($(ifconfig | cut -d " " -f1 | awk 'NF==1{print $1}'))
 
             # Creating some directories
             if [ ! -f "/boot/config/plugins/&name;/&name;.cfg" ]; then

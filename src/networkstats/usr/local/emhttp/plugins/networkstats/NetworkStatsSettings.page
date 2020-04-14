@@ -19,7 +19,7 @@ $running        = '<span class="green" id="serviceStatus">Running <a href="/plug
 $stopped        = '<span class="orange" id="serviceStatus">Stopped <a href="/plugins/' . $plugin .'/service.php?action=start" class="xhr">start</a></span>';
 
 $status    = ($active)    ? $running : $stopped;
-exec("ifconfig -s|awk '/^(bond|eth|veth|br|vnet|wg)/{print $1}'",$interfaces);
+exec("ifconfig | cut -d " " -f1 | awk 'NF==1{print $1}'",$interfaces);
 ?>
 <script>
 function prepareSettings(form) {
@@ -36,7 +36,7 @@ function prepareSettings(form) {
   item.selected = true;
 }
 $(function(){
-  $('#interfaces').dropdownchecklist({emptyText:'None', width:<?=strstr('gray,azure',$display['theme'])?200:200?>, firstItemChecksAll: true, explicitClose:'...close'});
+  $('#interfaces').dropdownchecklist({emptyText:'None', width:<?=strstr('gray,azure',$display['theme'])?300:300?>, firstItemChecksAll: true, explicitClose:'...close'});
   $('.hxr').on('click', function(e) {
     e.preventDefault();
     $.get($(this).attr('href'), function(data) {
@@ -56,6 +56,7 @@ $(function(){
 <?php
 echo( '<option value="">(ALL)</option>');
 foreach( $interfaces as $interface) {
+    $interface = str_replace(':', '', $interface);
     echo( mk_option_check($selectedInterfaces, $interface, $interface) );
 }
 ?>
