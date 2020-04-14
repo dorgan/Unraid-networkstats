@@ -176,7 +176,7 @@
             find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
             find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
-            interfaces=($(ifconfig -s|awk '/^(bond|eth)/{print $1}'))
+            interfaces=($(ifconfig -s|awk '/^(bond|eth|veth|br|vnet|wg)/{print $1}'))
 
             # Creating some directories
             if [ ! -f "/boot/config/plugins/&name;/&name;.cfg" ]; then
