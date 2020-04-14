@@ -19,7 +19,7 @@ $running        = '<span class="green" id="serviceStatus">Running <a href="/plug
 $stopped        = '<span class="orange" id="serviceStatus">Stopped <a href="/plugins/' . $plugin .'/service.php?action=start" class="xhr">start</a></span>';
 
 $status    = ($active)    ? $running : $stopped;
-exec("ifconfig | cut -d " " -f1 | awk 'NF==1{print $1}'",$interfaces);
+exec("ifconfig | cut -d \" \" -f1 | awk 'NF==1{print $1}'",$interfaces);
 ?>
 <script>
 function prepareSettings(form) {
