@@ -26,6 +26,8 @@
     <CHANGES>
     ##&name;
 ###2020.04.14d
+ - Fixing accidentially removed page info that was breaking plugin
+
 ###2020.04.14c
  - Added the ability to set an alias, friendly name for each interface
 ###2020.04.14b
