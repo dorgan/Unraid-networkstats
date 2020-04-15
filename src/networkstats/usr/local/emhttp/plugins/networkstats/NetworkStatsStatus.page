@@ -1,7 +1,3 @@
-Menu="Stats:3"
-Title="Network Stats"
-Icon="icons/networkstats.png"
----
 <?php
 $plugin = "networkstats";
 $active       = (intval(trim(shell_exec( "[ -f /proc/`cat /var/run/vnstat/vnstat.pid 2> /dev/null`/exe ] && echo 1 || echo 0 2> /dev/null" ))) === 1);
@@ -18,7 +14,17 @@ $vnstat = '/plugins/' . $plugin . '/vnstat.php';
 <table border="0">
 <?php
 foreach ($interfaces as $interface) {
-    echo ('<tr><td><img src="' .$vnstat .'?i=' . $interface .'&s=y"></td><td><img src="' . $vnstat . '?i=' . $interface .'&style=3&dh=h" /></td></tr>');
+  $aliasKey = 'alias-' . $interface;
+  if (isset($cfg[$aliasKey])) {
+    $alias = trim($cfg[$aliasKey]);
+    if (empty($alias)) {
+      $cfg[$aliasKey] = null;
+      $alias = null;
+    }
+  } else {
+    $alias = null;
+  }
+  echo ('<tr><td><img src="' .$vnstat .'?i=' . $interface .'&s=y' . (!is_null($alias) ? '&header=' . urlencode($alias) : '' ) . '"></td><td><img src="' . $vnstat . '?i=' . $interface .'&style=3&dh=h' . (!is_null($alias) ? '&header=' . urlencode($cfg[$aliasKey]) . ' / hourly' : '')  .'" /></td></tr>');
 }
 ?>
 </table>

@@ -13,7 +13,6 @@ if (file_exists($cfg_file)) {
     $selectedInterfaces = '';
 }
 
-
 $active       = (intval(trim(shell_exec( "[ -f /proc/`cat /var/run/vnstat/vnstat.pid 2> /dev/null`/exe ] && echo 1 || echo 0 2> /dev/null" ))) === 1);
 $running        = '<span class="green" id="serviceStatus">Running <a href="/plugins/' . $plugin .'/service.php?action=stop" class="xhr">stop</a></span>';
 $stopped        = '<span class="orange" id="serviceStatus">Stopped <a href="/plugins/' . $plugin .'/service.php?action=start" class="xhr">start</a></span>';
@@ -29,6 +28,7 @@ function prepareSettings(form) {
       if (interfaces.length) interfaces += ',';
       interfaces += item.value;
       item.selected = false;
+      $('#alias-' + item.value).toggle();
     }
   }
   item = form.interfaces.options[0];
@@ -36,7 +36,24 @@ function prepareSettings(form) {
   item.selected = true;
 }
 $(function(){
-  $('#interfaces').dropdownchecklist({emptyText:'None', width:<?=strstr('gray,azure',$display['theme'])?300:300?>, firstItemChecksAll: true, explicitClose:'...close'});
+    $('#interfaces').dropdownchecklist({
+        emptyText:'None',
+        width:<?=strstr('gray,azure',$display['theme'])?300:300?>,
+        firstItemChecksAll: true,
+        explicitClose:'...close',
+        onItemClick: function(checkbox, selector) {
+            var val = checkbox[0].value;
+            if (val !== "") {
+                $('#alias-' + val ).toggle(100);
+            } else {
+                if (checkbox[0].checked === true) {
+                    $('.interface-alias-row').show(100);
+                } else {
+                    $('.$interface-alias-row').hide(100);
+                }
+            }
+        }
+  });
   $('.hxr').on('click', function(e) {
     e.preventDefault();
     $.get($(this).attr('href'), function(data) {
@@ -62,6 +79,20 @@ foreach( $interfaces as $interface) {
 ?>
 </select>
 </div>
+<h3>Aliases</h3>
+<table border="0" cellspacing="4">
+<?php
+$selectedInterfaces = explode(',', $selectedInterfaces);
+foreach($interfaces as $interface) {
+    $interface = str_replace(':', '', $interface);
+    echo('<tr id="alias-' . $interface . '" class="interface-alias-row" style="display:' . (in_array($interface, $selectedInterfaces)? 'block' : 'none') .  '">');
+    $key = 'alias-' . $interface;
+    $alias = (isset($cfg[$key]) ? $cfg[$key] : '' );
+    echo( '<td width="150"><label for="alias-' .$interface .'-value">' . $interface .'</label> :</td><td><input name="' . $key . '" id="alias-' . $interface . '-value" value="' . $alias . '"/></td>');
+    echo('</tr>');
+}
+?>
+</table>
 <div>
     <h4>
         <span class="" id="notify-status">VNSTAT Daemon: <?=$status;?></span>
