@@ -101,7 +101,6 @@ $(function(){
         }
   });
 
-  function 
   $('.toggleDaemon').on('click', function(e) {
     var action = (isActive ? 'stop' : 'start');
     $.get('<?php echo($xhrUrl) ?>' + action, function(data) {
