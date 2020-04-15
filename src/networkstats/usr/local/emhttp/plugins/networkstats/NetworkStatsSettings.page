@@ -14,10 +14,11 @@ if (file_exists($cfg_file)) {
 }
 
 $active       = (intval(trim(shell_exec( "[ -f /proc/`cat /var/run/vnstat/vnstat.pid 2> /dev/null`/exe ] && echo 1 || echo 0 2> /dev/null" ))) === 1);
-$running        = '<span class="green" id="serviceStatus">Running <a href="/plugins/' . $plugin .'/service.php?action=stop" class="xhr">stop</a></span>';
-$stopped        = '<span class="orange" id="serviceStatus">Stopped <a href="/plugins/' . $plugin .'/service.php?action=start" class="xhr">start</a></span>';
+$xhrUrl = '/plugins/' . $plugin .'/service.php?action=';
+//$running        = '<span class="green" id="serviceStatus">Running <a href="/plugins/' . $plugin .'/service.php?action=stop" class="xhr">stop</a></span>';
+//$stopped        = '<span class="orange" id="serviceStatus">Stopped <a href="/plugins/' . $plugin .'/service.php?action=start" class="xhr">start</a></span>';
 
-$status    = ($active)    ? $running : $stopped;
+//$status    = ($active)    ? $running : $stopped;
 exec("ifconfig | cut -d \" \" -f1 | awk 'NF==1{print $1}'",$interfaces);
 ?>
 <script>
@@ -35,32 +36,6 @@ function prepareSettings(form) {
   item.value = interfaces;
   item.selected = true;
 }
-$(function(){
-    $('#interfaces').dropdownchecklist({
-        emptyText:'None',
-        width:<?=strstr('gray,azure',$display['theme'])?300:300?>,
-        firstItemChecksAll: true,
-        explicitClose:'...close',
-        onItemClick: function(checkbox, selector) {
-            var val = checkbox[0].value;
-            if (val !== "") {
-                $('#alias-' + val ).toggle(100);
-            } else {
-                if (checkbox[0].checked === true) {
-                    $('.interface-alias-row').show(100);
-                } else {
-                    $('.$interface-alias-row').hide(100);
-                }
-            }
-        }
-  });
-  $('.hxr').on('click', function(e) {
-    e.preventDefault();
-    $.get($(this).attr('href'), function(data) {
-      $('#serviceStatus').replace(data);
-    });
-  });
-});
 </script>
 
 <form markdown="1" name="network_stat_settings" method="POST" action="/update.php" target="progressFrame" onsubmit="prepareSettings(this)">
@@ -80,6 +55,7 @@ foreach( $interfaces as $interface) {
 </select>
 </div>
 <h3>Aliases</h3>
+<div>&nbsp;</div>
 <table border="0" cellspacing="4">
 <?php
 $selectedInterfaces = explode(',', $selectedInterfaces);
@@ -95,25 +71,53 @@ foreach($interfaces as $interface) {
 </table>
 <div>
     <h4>
-        <span class="" id="notify-status">VNSTAT Daemon: <?=$status;?></span>
+        <span class="" id="notify-status">VNSTAT Daemon: <span id="daemonStatus"></span></span>
     </h4>
 </div>
 <div>
   <input type="submit" value="SAVE">
+  <input type="button" class="toggleDaemon daemonStopped" id="vnStatDaemonControl" value="<?= ($active ? 'Stop Daemom' : 'Start Daemon')?>" >
 </div>
 </form>
 <script>
-$(function() {
-  function bindAjax() {
-    $('.xhr').on('click', function(e) {
-      e.stopImmediatePropagation();
-      e.preventDefault();
-      $.get($(this).attr('href'), function(data) {
-        $('#serviceStatus').replaceWith(data);
-        bindAjax();
-      });
-    });
-  }
-  bindAjax();
+$(function(){
+  var isActive = '<?php echo($active) ?>';
+    $('#interfaces').dropdownchecklist({
+        emptyText:'None',
+        width:<?=strstr('gray,azure',$display['theme'])?300:300?>,
+        firstItemChecksAll: true,
+        explicitClose:'...close',
+        onItemClick: function(checkbox, selector) {
+            var val = checkbox[0].value;
+            if (val !== "") {
+                $('#alias-' + val ).toggle(100);
+            } else {
+                if (checkbox[0].checked === true) {
+                    $('.interface-alias-row').show(100);
+                } else {
+                    $('.$interface-alias-row').hide(100);
+                }
+            }
+        }
+  });
+
+  function 
+  $('.toggleDaemon').on('click', function(e) {
+    var action = (isActive ? 'stop' : 'start');
+    $.get('<?php echo($xhrUrl) ?>' + action, function(data) {
+      $('#vnStatDaemonControl').val(data.ctaValue);
+      $('#daemonStatus').html(data.status);
+      if (data.status === 'Running') {
+        isActive = true;
+      } else {
+        isActive = false;
+      }
+    }, 'json');
+  });
+
+  $.get('<?php echo($xhrUrl) ?>status', function(data) {
+      $('#vnStatDaemonControl').val(data.ctaValue);
+      $('#daemonStatus').html(data.status);
+    }, 'json');
 });
 </script>

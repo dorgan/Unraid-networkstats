@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2020.04.14d">
+  <!ENTITY version   "2020.04.15">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -25,7 +25,12 @@
 
     <CHANGES>
     ##&name;
+###2020.04.15
+ - Cleaning up layout and adding a button for stopping/starting the vnstat daemon
+
 ###2020.04.14d
+ - Fixing accidentially removed page info that was breaking plugin
+
 ###2020.04.14c
  - Added the ability to set an alias, friendly name for each interface
 ###2020.04.14b
