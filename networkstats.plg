@@ -21,7 +21,8 @@
          version="&version;"
          pluginURL="&pluginURL;"
          support="https://forums.unraid.net/topic/74525-plugin-network-stat/"
-         launch="&launch;">
+         launch="&launch;"
+	 icon="pie-chart">
 
     <CHANGES>
     ##&name;
