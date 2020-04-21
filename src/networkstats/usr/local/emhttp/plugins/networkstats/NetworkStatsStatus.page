@@ -1,6 +1,7 @@
 Menu="Stats:3"	
 Title="Network Stats"	
-Icon="icons/networkstats.png"	
+Icon="networkstats.png"
+Tag="pie-chart"
 ---
 <?php
 $plugin = "networkstats";

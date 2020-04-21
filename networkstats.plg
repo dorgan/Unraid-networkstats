@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2020.04.15a">
+  <!ENTITY version   "2020.04.21">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -21,10 +21,14 @@
          version="&version;"
          pluginURL="&pluginURL;"
          support="https://forums.unraid.net/topic/74525-plugin-network-stat/"
-         launch="&launch;">
+         launch="&launch;"
+         icon="pie-chart">
 
     <CHANGES>
     ##&name;
+###2020.04.21
+ - Updating to FA icon
+ 
 ###2020.04.15a
  - Removing Stray function
 
@@ -206,7 +210,7 @@
                 for i in "${interfaces[@]}"
                 do
                     if [ ! -f "/var/lib/${i}" ]; then
-                        vnstat --create -i "${i}"
+                        vnstat --add -i "${i}"
                     fi
                 done
             fi

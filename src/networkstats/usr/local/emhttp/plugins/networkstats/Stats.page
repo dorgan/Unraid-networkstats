@@ -1,6 +1,7 @@
 Menu="Tasks:90"
 Type="xmenu"
 Title="System Stats"
-Icon="stats.png"
+Icon="networkstats.png"
+Tag="pie-chart"
 Code="f1fe"
 Tabs="true"
