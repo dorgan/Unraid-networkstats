@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2020.04.21">
+  <!ENTITY version   "2020.04.21a">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -22,14 +22,14 @@
          pluginURL="&pluginURL;"
          support="https://forums.unraid.net/topic/74525-plugin-network-stat/"
          launch="&launch;"
-<<<<<<< HEAD
          icon="pie-chart">
-=======
-	 icon="pie-chart">
->>>>>>> bbb413763f8dd4ff9416dbf01fd8d57ed5571077
 
     <CHANGES>
     ##&name;
+
+###2020.04.21a
+ - Update to make sure interfaces get added
+
 ###2020.04.21
  - Updating to FA icon
  

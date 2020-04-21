@@ -16,11 +16,9 @@ if (file_exists($cfg_file)) {
 
 $active       = (intval(trim(shell_exec( "[ -f /proc/`cat /var/run/vnstat/vnstat.pid 2> /dev/null`/exe ] && echo 1 || echo 0 2> /dev/null" ))) === 1);
 $xhrUrl = '/plugins/' . $plugin .'/service.php?action=';
-//$running        = '<span class="green" id="serviceStatus">Running <a href="/plugins/' . $plugin .'/service.php?action=stop" class="xhr">stop</a></span>';
-//$stopped        = '<span class="orange" id="serviceStatus">Stopped <a href="/plugins/' . $plugin .'/service.php?action=start" class="xhr">start</a></span>';
 
-//$status    = ($active)    ? $running : $stopped;
 exec("ifconfig | cut -d \" \" -f1 | awk 'NF==1{print $1}'",$interfaces);
+
 ?>
 <script>
 function prepareSettings(form) {
@@ -67,6 +65,7 @@ foreach($interfaces as $interface) {
     $alias = (isset($cfg[$key]) ? $cfg[$key] : '' );
     echo( '<td width="150"><label for="alias-' .$interface .'-value">' . $interface .'</label> :</td><td><input name="' . $key . '" id="alias-' . $interface . '-value" value="' . $alias . '"/></td>');
     echo('</tr>');
+    exec('vnstat --add -i ' . $interface);
 }
 ?>
 </table>
