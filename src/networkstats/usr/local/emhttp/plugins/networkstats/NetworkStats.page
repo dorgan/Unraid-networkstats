@@ -1,5 +1,6 @@
 Menu="NetworkServices"
 Title="Network Stats"
 Tag="pie-chart"
+Icon="pie-chart"
 Type="xmenu"
 Tabs="true"
