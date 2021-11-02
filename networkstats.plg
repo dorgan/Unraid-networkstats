@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2021.08.26">
+  <!ENTITY version   "2021.11.02">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -12,8 +12,8 @@
   <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
   <!ENTITY plgPATH   "/boot/config/plugins/&name;">
   <!ENTITY plgNAME   "&name;-&version;-x86_64-1">
-  <!ENTITY vnstatFile "vnstat-2.5-x86_64-1_slonly.txz">
-  <!ENTITY vnstatFileMD5 "f03c5244bcbb602685d50fb4e67a6997">
+  <!ENTITY vnstatFile "vnstat-2.6-x86_64-1_slonly.txz">
+  <!ENTITY vnstatFileMD5 "727cf2d1f8aafb04c3315a96e02022ae">
 ]>
 
 <PLUGIN  name="&name;"
@@ -26,6 +26,9 @@
 
     <CHANGES>
     ##&name;
+###2021.11.02
+- Updating vnstat to version 2.6
+
 ###2021.08.26
  - Fix file permission
  - change how vnstat is pulled so it doesnt give a false warning in Fix Common Problems
