@@ -169,12 +169,7 @@
     </FILE>
     <FILE Run="/bin/bash">
         <INLINE>
-            # Install vnstat
-            if [ ! -f "/var/log/packages/&vnstatFile;" ]; then
-                download_install &vnstatFile; &vnstatFileMD5;
-                # make daemon executable
-                chmod ugo+x /etc/rc.d/rc.vnstat
-            fi
+            chmod ugo+x /etc/rc.d/rc.vnstat
 
             sed -i -e 's@BandwidthDetection 1@BandwidthDetection 0@g' /etc/vnstat.conf
             /etc/rc.d/rc.vnstat stop
