@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "networkstats">
   <!ENTITY author    "Donald Organ">
-  <!ENTITY version   "2021.11.02">
+  <!ENTITY version   "2022.08.25">
   <!ENTITY launch    "Settings/NetworkStats">
   <!ENTITY branch    "master">
   <!ENTITY gitURL    "https://raw.githubusercontent.com/dorgan/Unraid-&name;/&branch;">
@@ -26,6 +26,9 @@
 
     <CHANGES>
     ##&name;
+###2022.08.25
+- Removing images for now to get rid of external package dependencies, will add back images/graphs/charts in a future release
+
 ###2021.11.02
 - Updating vnstat to version 2.6
 

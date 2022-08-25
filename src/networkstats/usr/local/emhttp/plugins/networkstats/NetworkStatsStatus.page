@@ -15,7 +15,137 @@ $cfg = parse_plugin_cfg($plugin);
 $interfaces = explode(',', $cfg['INTERFACES']);
 $vnstat = '/plugins/' . $plugin . '/vnstat.php';
 ?>
+<script>
+function getStats(interface, summary, alias) {
+    summary = summary || false;
+    alias = alias || false;
+    $.get(
+        '<?php echo($vnstat)?>?i=' + interface + (summary ? '&s=1' : ''),
+        function(data) {
+            var int = data.interfaces[0];
+            html = '<table border="0" cellspacing="0" cellpadding="0" width="300" style="margin: 0px;width:300px;">';
+            html += '<tr><td colspan="2"><h4>' + (alias ? alias : interface) + '</h4></td></tr>'; 
+            html += '<tr><td colspan="2">Last Updated: ' + data.interfaces[0].updated.date.year + '-' + data.interfaces[0].updated.date.month + '-' + data.interfaces[0].updated.date.day + ' @ ' + data.interfaces[0].updated.time.hour + ':' + data.interfaces[0].updated.time.minute + '</td></tr>';
+            if (!summary) {
+                var days = [];
+                int.traffic.day.forEach((day, idx) => {
+                    var kibRx = parseInt(day.rx);
+                    var kibTx = parseInt(day.tx);
+                    var unitRx = 'KiB';
+                    var unitTx = 'KiB';
+                    var tx = kibTx;
+                    var rx = kibRx;
+                    if (kibRx > 1048576) {
+                        unitRx = 'MiB';
+                        var mibRx = kibRx / 1048576;
+                        rx = mibRx;
+                    }
+                    if (mibRx > 1024) {
+                        unitRx = 'GiB';
+                        var gibRx = mibRx / 1024;
+                        rx = gibRx;
+                    }
+                    if (gibRx > 1024) {
+                        unitRx = 'TiB';
+                        var tibRx = gibRx / 1024;
+                        rx = tibRx;
+                    }
 
+
+                    if (kibTx > 1048576) {
+                        unitTx = 'MiB';
+                        var mibTx = kibTx / 1048576;
+                        tx = mibTx;
+                    }
+                    if (mibTx > 1024) {
+                        unitTx = 'GiB';
+                        var gibTx = mibTx / 1024;
+                        tx = gibTx;
+                    }
+                    if (gibTx > 1024) {
+                        unitTx = 'TiB';
+                        var tibTx = gibTx / 1024;
+                        tx = tibTx;
+                    }
+
+                    days[idx] = {
+                        unitRx: unitRx,
+                        unitTx: unitTx,
+                        tx: tx.toFixed(2),
+                        rx: rx.toFixed(2)
+                    };
+                });
+                
+                html += '<tr><td valign="top">Today</td><td valign="top">tx: ' + days[1].tx + ' ' + days[1].unitTx + '<br/>' + 'rx: ' + days[1].rx + ' ' + days[1].unitRx + '</td></tr>';
+                html += '<tr><td valign="top">Yesterday</td><td valign="top">tx: ' + days[0].tx + ' ' + days[0].unitTx + '<br/>' + 'rx: ' + days[0].rx + ' ' + days[0].unitRx + '</td></tr>';
+            } else {
+                var hours = [];
+                int.traffic.hour.forEach((hour, idx) => {
+                    var kibRx = parseInt(hour.rx);
+                    var kibTx = parseInt(hour.tx);
+                    var unitRx = 'KiB';
+                    var unitTx = 'KiB';
+                    var tx = kibTx;
+                    var rx = kibRx;
+                    if (kibRx > 1048576) {
+                        unitRx = 'MiB';
+                        var mibRx = kibRx / 1048576;
+                        rx = mibRx;
+                    }
+                    if (mibRx > 1024) {
+                        unitRx = 'GiB';
+                        var gibRx = mibRx / 1024;
+                        rx = gibRx;
+                    }
+                    if (gibRx > 1024) {
+                        unitRx = 'TiB';
+                        var tibRx = gibRx / 1024;
+                        rx = tibRx;
+                    }
+
+
+                    if (kibTx > 1048576) {
+                        unitTx = 'MiB';
+                        var mibTx = kibTx / 1048576;
+                        tx = mibTx;
+                    }
+                    if (mibTx > 1024) {
+                        unitTx = 'GiB';
+                        var gibTx = mibTx / 1024;
+                        tx = gibTx;
+                    }
+                    if (gibTx > 1024) {
+                        unitTx = 'TiB';
+                        var tibTx = gibTx / 1024;
+                        tx = tibTx;
+                    }
+
+                    hours[idx] = {
+                        time: hour.time.hour,
+                        date: hour.date.year.toString() + '-' + hour.date.month.toString().padStart(2, '0') + '-' + hour.date.day.toString().padStart(2, '0'),
+                        unitRx: unitRx,
+                        unitTx: unitTx,
+                        tx: tx.toFixed(2),
+                        rx: rx.toFixed(2)
+                    };
+                });
+                hours = hours.reverse();
+                var lastDate = '';
+                hours.forEach(h => {
+                    if (lastDate != h.date) {
+                        html += '<tr><td colspan="2">' + h.date + '</td></tr>';
+                        lastDate = h.date;
+                    }
+                    html += '<tr><td valign="top">' + h.time.toString().padStart(2, '0') + '</td><td valign="top">tx: ' + h.tx + ' ' + h.unitTx + '<br/>' + 'rx: ' + h.rx + ' ' + h.unitRx + '</td></tr>';
+                });
+            }
+            html += '</table>';
+            $('#int-' + interface + (summary ? '-d' : '-s')).html(html);
+        },
+        "json"
+    );
+}
+</script>
 <table border="0">
 <?php
 foreach ($interfaces as $interface) {
@@ -29,13 +159,29 @@ foreach ($interfaces as $interface) {
   } else {
     $alias = null;
   }
-  echo ('<tr><td><img src="' .$vnstat .'?i=' . $interface .'&s=y' . (!is_null($alias) ? '&header=' . urlencode($alias) : '' ) . '"></td><td><img src="' . $vnstat . '?i=' . $interface .'&style=3&dh=h' . (!is_null($alias) ? '&header=' . urlencode($cfg[$aliasKey]) . ' / hourly' : '')  .'" /></td></tr>');
+  echo ('<tr><td width="50%" id="int-' . $interface . '-s" valign="top"></td><td width="50%"  id="int-' . $interface . '-d" valign="top"></td></tr>');
 }
 ?>
 </table>
-
 <script>
+<?php
+foreach ($interfaces as $interface) {
+    $aliasKey = 'alias-' . $interface;
+    if (isset($cfg[$aliasKey])) {
+        $alias = trim($cfg[$aliasKey]);
+        if (empty($alias)) {
+            $cfg[$aliasKey] = null;
+            $alias = null;
+        }
+    } else {
+        $alias = null;
+    }
+    echo("getStats('" . $interface ."', false" . (!is_null($alias) ? ",'" . $alias . "'" : "") . ");\n");
+    echo("getStats('" . $interface ."', true" . (!is_null($alias) ? ",'" . $alias . "'" : "") . ");\n");
+}
+?>
 $('#tab3').bind('click', function() {
   $('span.status').hide();
 });
+
 </script>

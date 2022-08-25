@@ -1,14 +1,12 @@
 <?php
 $file = tmpfile();
 $name = stream_get_meta_data($file);
-$cmd = 'vnstati' . (!isset($_GET['s']) ? ' --style ' . $_GET['style'] . ' -' . $_GET['dh']  : ' -s ') . ' -i ' . $_GET['i'] . ' -o ' .$name['uri'] . (isset($_GET['header']) ? ' --headertext "' . urldecode($_GET['header']) . '"' : '');
+$cmd = 'vnstat -i ' . $_GET['i'] . ' --json ' .(!isset($_GET['s']) ? 'd 2' : 'h 14');
 $output = shell_exec($cmd);
-$size = filesize(stream_get_meta_data($file)['uri']);
 if (!isset($_GET['debug'])) {
-  header('Content-Type: image/png');
-  header('Content-Length: ' .$size );
+    header('Content-Type: application/json');
+    echo($output);
 } else {
-  echo $cmd;
+    var_dump($output);
 }
-readfile($name['uri']);
 ?>
