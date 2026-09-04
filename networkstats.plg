@@ -142,6 +142,7 @@
     -->
     <FILE Name="&plgPATH;/&plgNAME;.txz">
         <URL>&gitURL;/archive/&plgNAME;.txz</URL>
+        <SHA256>eafeeecdde29ad78da9b335bfb058323ac682adc58f9f28c8e094567dc38f0f4</SHA256>
     </FILE>
 
     <!--
@@ -149,6 +150,7 @@
     -->
     <FILE Name="&plgPATH;/&plgNAME;.md5">
         <URL>&gitURL;/archive/&plgNAME;.md5</URL>
+        <SHA256>5a67a3a4a8203a3341d39afd1ba3b9ff3038078e7ba34428d938e4798efcc5b3</SHA256>
     </FILE>
 
     <FILE Name="&plgPATH;/&name;.cfg">
